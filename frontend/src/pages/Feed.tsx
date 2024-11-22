@@ -1,5 +1,5 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar-feed";
+import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
+import { AppSidebar } from "./components/app-sidebar";
 import {
   ArrowUpCircleIcon,
   ArrowDownCircleIcon,
@@ -7,6 +7,7 @@ import {
   PlusCircleIcon,
   BellIcon,
   HomeIcon,
+  MagnifyingGlassCircleIcon,
 } from "@heroicons/react/24/outline";
 import "./App.css";
 import {
@@ -28,7 +29,6 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { Link } from "react-router-dom";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const handleIconClick = () => {
@@ -40,15 +40,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <AppSidebar />
       <main>
         {/* Add Search Bar with Plus Circle Icon */}
-        <div className="search-bar-container relative">
+        <div className="search-bar-container relative border-2 border-black">
           <input
             type="text"
             placeholder="Search..."
-            className="search-bar"
+            className="search-bar focus:ring-0 focus:border-black outline-none"
           />
+          {/*Adding Search Icon*/}
+          <MagnifyingGlassCircleIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-8 w-8 text-gray-500"/>
           <button
             onClick={handleIconClick}
-            className="absolute right-16 top-1/2 transform -translate-y-1/2 "
+            className="absolute right-16 top-1/2 transform -translate-y-1/2"
             aria-label="Add"
           >
             <PlusCircleIcon className="h-8 w-8 text-black strokeWidth={1} " />
@@ -66,26 +68,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="full-width-card relative">
           <button
             onClick={handleIconClick}
-            className="absolute top-3 left-3"
+            className="absolute top-1 left-0"
             aria-label="Arrow Up"
           >
-            <ArrowUpCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowUpCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 left-3"
+            className="absolute bottom-1 left-0"
             aria-label="Arrow Down"
           >
-            <ArrowDownCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 right-3"
+            className="absolute bottom-0 right-0"
             aria-label="Arrow Right"
           >
-            <ArrowRightIcon className="h-10 w-10 text-blue-400" />
+            <ArrowRightIcon className="h-8 w-8 text-black" />
           </button>
-          <div>
+          <div className="relative -top-2">
             <h2 className="card-title">Post Title</h2>
             <p className="card-content">
               This is a full-width card. You can use it to display
@@ -98,26 +100,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="full-width-card relative">
           <button
             onClick={handleIconClick}
-            className="absolute top-3 left-3"
+            className="absolute top-1 left-0"
             aria-label="Arrow Up"
           >
-            <ArrowUpCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowUpCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 left-3"
+            className="absolute bottom-1 left-0"
             aria-label="Arrow Down"
           >
-            <ArrowDownCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 right-3"
+            className="absolute bottom-0 right-0"
             aria-label="Arrow Right"
           >
-            <ArrowRightIcon className="h-10 w-10 text-blue-400" />
+            <ArrowRightIcon className="h-8 w-8 text-black" />
           </button>
-          <div>
+          <div className="relative -top-2">
             <h2 className="card-title">Post Title</h2>
             <p className="card-content">
               This is a full-width card. You can use it to display
@@ -130,26 +132,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="full-width-card relative">
           <button
             onClick={handleIconClick}
-            className="absolute top-3 left-3"
+            className="absolute top-1 left-0"
             aria-label="Arrow Up"
           >
-            <ArrowUpCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowUpCircleIcon className="h-8 w-8 text-black-400" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 left-3"
+            className="absolute bottom-1 left-0"
             aria-label="Arrow Down"
           >
-            <ArrowDownCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 right-3"
+            className="absolute bottom-0 right-0"
             aria-label="Arrow Right"
           >
-            <ArrowRightIcon className="h-10 w-10 text-blue-400" />
+            <ArrowRightIcon className="h-8 w-8 text-black" />
           </button>
-          <div>
+          <div className="relative -top-2">
             <h2 className="card-title">Post Title</h2>
             <p className="card-content">
               This is a full-width card. You can use it to display
@@ -162,26 +164,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="full-width-card relative">
           <button
             onClick={handleIconClick}
-            className="absolute top-3 left-3"
+            className="absolute top-1 left-0"
             aria-label="Arrow Up"
           >
-            <ArrowUpCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowUpCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 left-3"
+            className="absolute bottom-1 left-0"
             aria-label="Arrow Down"
           >
-            <ArrowDownCircleIcon className="h-8 w-8 text-blue-400" />
+            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
           </button>
           <button
             onClick={handleIconClick}
-            className="absolute bottom-3 right-3"
+            className="absolute bottom-0 right-0"
             aria-label="Arrow Right"
           >
-            <ArrowRightIcon className="h-10 w-10 text-blue-400" />
+            <ArrowRightIcon className="h-8 w-8 text-black" />
           </button>
-          <div>
+          <div className="relative -top-2">
             <h2 className="card-title">Post Title</h2>
             <p className="card-content">
               This is a full-width card. You can use it to display
@@ -193,7 +195,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {children}
 
         {/* Footer Section */}
-        <footer className="footer bg-white text-black py-2 text-center mt-8">
+        <footer className="footer bg-gray-200 text-black py-2 text-center mt-8">
           <p>&copy; {new Date().getFullYear()} Mercury AI. All rights reserved.</p>
           {/*<div className="mt-2">
             <a href="/privacy-policy" className="text-black hover:text-gray-400 mx-2">Privacy Policy</a>
@@ -205,7 +207,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </SidebarProvider>
   );
 }
-
 
 
 
