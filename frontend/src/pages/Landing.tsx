@@ -10,6 +10,7 @@ import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/outline"; // Impo
 import { useState } from "react";
 import "./App.css";
 import logo from "./images/MERCAI.png"; // Ensure the correct path to the image
+import { Link } from "react-router-dom";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState(""); // To hold the search query

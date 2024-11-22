@@ -1,5 +1,5 @@
-import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
-import { AppSidebar } from "./components/app-sidebar-feed";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar-feed";
 import {
   ArrowUpCircleIcon,
   ArrowDownCircleIcon,
@@ -28,6 +28,7 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { Link } from "react-router-dom";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const handleIconClick = () => {

@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/ui/app-sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 import { 
   Breadcrumb,
   BreadcrumbItem,
@@ -13,6 +13,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Link } from "react-router-dom";
 
 export function Page() {
   return (
@@ -25,7 +26,7 @@ export function Page() {
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
                 <BreadcrumbLink href="@/Feed">
-                  Mercury
+                  <Link to="/Feed">Mercury</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />

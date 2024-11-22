@@ -1,5 +1,5 @@
-import { SidebarProvider } from "./components/ui/sidebar";
-import { AppSidebar } from "./components/app-sidebar-feed";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar-feed";
 import {
   ArrowUpCircleIcon,
   ArrowDownCircleIcon,
@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button"; // shadcn Button
 import "./App.css";
 import { ArrowRightCircle } from "lucide-react";
+import { useParams } from 'react-router-dom';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

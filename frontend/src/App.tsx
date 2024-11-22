@@ -1,24 +1,28 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { Page as SettingsPage } from "@/Settings";
-import ProfileSettingsPage from "@/ProfilePage";
-import Layout from "./Feed";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from '@/pages/Landing';
+import Feed from '@/pages/Feed';
+import Post from '@/pages/Post';
+import { Page } from '@/pages/Settings';
+import ProfileSettingsPage from '@/pages/ProfilePage';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Default Route */}
-        <Route path="/" element={<Navigate to="/settings" />} />
+        {/* Root Route */}
+        <Route path="/" element={<Layout />} />
 
-        {/* Settings Page */}
-        <Route path="/settings" element={<SettingsPage />} />
+        {/* Feed Pages */}
+        <Route path="/feed" element={<Feed />} />
+        <Route path="/feed/:postId" element={<Post />} /> {/* Dynamic Route */}
 
-        {/* Profile Settings Page */}
+        {/* Settings Pages */}
+        <Route path="/settings" element={<Page />} />
         <Route path="/settings/profile" element={<ProfileSettingsPage />} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

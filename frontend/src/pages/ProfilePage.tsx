@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Alert } from '@/components/ui/alert';
 import { Label } from '@/components/ui/label';
 import { Avatar } from '@/components/ui/avatar';
+import { Link } from "react-router-dom";
 
 const ProfileSettingsPage: React.FC = () => {
     return (
