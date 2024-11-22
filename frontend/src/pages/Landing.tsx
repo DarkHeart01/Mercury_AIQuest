@@ -8,11 +8,11 @@ import { Input } from "@/components/ui/input"; // Assuming SHADCN Input componen
 import { FaSpinner } from "react-icons/fa"; // Importing the loading spinner from react-icons
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/outline"; // Importing the search icon
 import { useState } from "react";
-import "./App.css";
+import "./Landing.css";
 import logo from "./images/MERCAI.png"; // Ensure the correct path to the image
 import { Link } from "react-router-dom";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Landing({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState(""); // To hold the search query
   const [isLoading, setIsLoading] = useState(false); // To handle loading state
   const [results, setResults] = useState<string[]>([]); // To hold search results
@@ -109,10 +109,3 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-
-
-
-
-
-
-
