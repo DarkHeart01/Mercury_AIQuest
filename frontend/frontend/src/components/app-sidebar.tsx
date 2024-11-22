@@ -1,25 +1,6 @@
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-  User,
-  Atom,
-  ShieldQuestion,
-  UsersRound,
-  MessageSquareWarning,
-  StickyNote,
-  Award,
-  Settings,
-} from "lucide-react"
+
 import { SearchForm } from "@/components/ui/search-form"
 import { VersionSwitcher } from "@/components/ui/version-switcher"
 import {
@@ -42,6 +23,7 @@ import {
 
 // This is sample data.
 const data = {
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
       title: "User Settings",
@@ -113,6 +95,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
+        <VersionSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0]}
+        />
         <SearchForm />
       </SidebarHeader>
       <SidebarContent className="gap-0">

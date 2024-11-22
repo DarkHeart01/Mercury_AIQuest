@@ -1,5 +1,3 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar-feed";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +9,7 @@ import { FaSpinner } from "react-icons/fa"; // Importing the loading spinner fro
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/outline"; // Importing the search icon
 import { useState } from "react";
 import "./Landing.css";
+import logo from "./images/MERCAI.png"; // Ensure the correct path to the image
 import { Link } from "react-router-dom";
 
 export default function Landing({ children }: { children: React.ReactNode }) {
@@ -36,13 +35,11 @@ export default function Landing({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <div className="flex">
+    <div className="flex">
       <main className="flex-1 flex flex-col items-center justify-center h-screen">
         {/* Logo */}
         <div className="absolute top-2 w-full flex justify-center">
-          <img src="#" alt="Logo" className="h-16 w-auto" />
+          <img src={logo} alt="Logo" className="h-16 w-auto" />
         </div>
 
         {/* Search Bar with Magnifying Glass Icon */}
@@ -110,6 +107,5 @@ export default function Landing({ children }: { children: React.ReactNode }) {
         </DropdownMenu>
       </main>
     </div>
-    </SidebarProvider>
   );
 }

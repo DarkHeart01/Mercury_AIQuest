@@ -29,12 +29,9 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { Link } from "react-router-dom";
+
 // This is sample data.
 const data = {
   user: {
@@ -68,7 +65,7 @@ const data = {
       items: [
         {
           title: "Liked Posts",
-          url: "/Feed",
+          url: "#",
         },
         {
           title: "Latest Posts",
@@ -117,12 +114,12 @@ const data = {
     },
     {
       title: "Settings",
-      url: "./Settings",
+      url: "#",
       icon: Settings,
       items: [
         {
           title: "Account Settings",
-          url: "./Settings",
+          url: "#",
         },
         {
           title: "Notification Settings",
@@ -160,16 +157,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
-      <SidebarMenu>
-      <Link to="/Landing">
-            <SidebarMenuButton>
-              Mercury AI Chatbot
-            </SidebarMenuButton>
-          </Link>
-        </SidebarMenu>
       <SidebarContent>
         <NavMain items={data.navMain} />
-
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
@@ -179,4 +168,3 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   )
 }
-

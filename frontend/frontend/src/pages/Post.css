@@ -120,29 +120,20 @@
 
 /* Search bar styles */
 .search-bar-container {
-  @apply flex justify-center my-5 mt-0 mb-2;
+  @apply flex justify-center my-5;
 }
 .search-bar {
-  @apply w-96 px-3 py-2 rounded-md text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border border-black text-black bg-white;
+  @apply w-96 px-3 py-2 rounded-md text-base focus:outline-none focus:ring-0 focus:border-black;
 }
 
 /* Full-width card */
 .full-width-card {
-  @apply w-full p-8 my-5 rounded-lg shadow-lg border border-black;
-  min-height: 150px;
-  @apply bg-gradient-to-b from-[#e2e8f0] to-[#e2e8f0];
+  @apply w-full bg-gray-100 p-8 my-5 rounded-lg shadow-sm border-2 border-black;
+  min-height: 140px;
 }
-
 .card-title {
   @apply mb-2 text-lg font-bold;
-  @apply text-black; /* Ensuring card title is white */
 }
-
 .card-content {
-  @apply text-base text-black; /* Ensuring card content is white */
-}
-
-/* Sidebar styles */
-.sidebar {
-  @apply bg-white text-black border-2 border-black; /* Apply white text */
+  @apply text-base text-gray-600;
 }

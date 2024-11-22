@@ -13,8 +13,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 export function Page() {
