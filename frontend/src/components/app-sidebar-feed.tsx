@@ -76,12 +76,8 @@ const data = {
           url: "/CreatPost",
         },
         {
-          title: "Liked Posts",
-          url: "/Feed",
-        },
-        {
           title: "Trending Posts",
-          url: "#",
+          url: "/feed/trending",
         },
       ],
     },

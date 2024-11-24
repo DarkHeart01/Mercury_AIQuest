@@ -11,6 +11,7 @@ import DocSense from "@/pages/docsense";
 import LandingPage from "@/pages/newLanding";
 import CreatePostPage from "./pages/CreatePost";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import TrendingFeed from "./pages/TrendingFeed";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/docsense" element={<DocSense />} />
           <Route path="/gittalk" element={<GitTalk />} />
           <Route path="/Feed" element={<Feed />} />
+          <Route path="/Feed/trending" element={<TrendingFeed />} />
           <Route path="/CreatPost" element={<CreatePostPage />} />
           <Route path='/Analytics' element={<AnalyticsPage />} />
           <Route path="/Landing" element={<LandingPage />} />

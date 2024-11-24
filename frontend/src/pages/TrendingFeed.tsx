@@ -7,7 +7,7 @@ interface Answer {
   content: string;
   createdAt: string;
   creatorName?: string;
-  isOfficial: boolean; // Add the isOfficial field
+  isOfficial: boolean;
 }
 
 interface Query {
@@ -22,52 +22,30 @@ interface Query {
   tags?: { id: number; name: string }[];
 }
 
-interface APIResponse {
-  results?: {
-    queries: Query[];
-  };
-  aiSuggestion?: string;
-}
-
-const SearchFeed: React.FC = () => {
-  const [queries, setQueries] = useState<Query[]>([]);
-  const [search, setSearch] = useState("");
+const TrendingFeed: React.FC = () => {
+  const [trendingQueries, setTrendingQueries] = useState<Query[]>([]);
   const [loading, setLoading] = useState(false);
-  const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [userId] = useState(2); // Hardcoded userId for the purpose of the example
 
   useEffect(() => {
-    // Fetch the entire feed initially
-    const fetchFeed = async () => {
+    // Fetch the trending queries
+    const fetchTrending = async () => {
       setLoading(true);
       try {
-        const response = await axios.get<Query[]>("http://65.1.43.251/api/feed/");
-        setQueries(response.data);
+        const response = await axios.get(
+          "http://65.1.43.251/api/feed/trending"
+        );
+        console.log(response.data.posts);
+        setTrendingQueries(response.data.posts || []);
       } catch (error) {
-        console.error("Error fetching feed:", error);
+        console.error("Error fetching trending queries:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFeed();
+    fetchTrending();
   }, []);
-
-  const handleSearch = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get<APIResponse>(
-        `http://65.1.43.251/api/feed/search?search=${encodeURIComponent(search)}`
-      );
-      const { results, aiSuggestion } = response.data;
-      setQueries(results?.queries || []);
-      setAiSuggestion(aiSuggestion || null);
-    } catch (error) {
-      console.error("Error searching queries:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleVote = async (queryId: number, type: "UPVOTE" | "DOWNVOTE") => {
     try {
@@ -75,24 +53,24 @@ const SearchFeed: React.FC = () => {
         `http://65.1.43.251/api/query/queries/${queryId}/vote`,
         {
           userId,
-          type
+          type,
         }
       );
       // Update the query's upvote/downvote count after voting
-      setQueries((prevQueries) =>
+      setTrendingQueries((prevQueries) =>
         prevQueries.map((query) =>
           query.id === queryId
             ? {
-              ...query,
-              upvotesCount:
-                type === "UPVOTE"
-                  ? (query.upvotesCount || 0) + 1
-                  : query.upvotesCount,
-              downvotesCount:
-                type === "DOWNVOTE"
-                  ? (query.downvotesCount || 0) + 1
-                  : query.downvotesCount,
-            }
+                ...query,
+                upvotesCount:
+                  type === "UPVOTE"
+                    ? (query.upvotesCount || 0) + 1
+                    : query.upvotesCount,
+                downvotesCount:
+                  type === "DOWNVOTE"
+                    ? (query.downvotesCount || 0) + 1
+                    : query.downvotesCount,
+              }
             : query
         )
       );
@@ -105,32 +83,11 @@ const SearchFeed: React.FC = () => {
     <>
       <AppSidebar />
       <div className="p-4 w-full">
-        <div className="mb-4">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search queries..."
-            className="border rounded p-2 w-full"
-          />
-          <button
-            onClick={handleSearch}
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-600"
-          >
-            Search
-          </button>
-        </div>
-
+        <h1 className="text-2xl font-bold mb-4">Trending Queries</h1>
         {loading && <p>Loading...</p>}
 
-        {aiSuggestion && (
-          <div className="p-4 mb-4 bg-gray-100 rounded">
-            <strong>AI Suggestion:</strong> {aiSuggestion}
-          </div>
-        )}
-
         <div>
-          {queries.map((query: any) => (
+          {trendingQueries.map((query: any) => (
             <div key={query.id || query.queryID} className="border p-4 mb-4 rounded shadow">
               <h2 className="text-xl font-bold">{query.content}</h2>
               <div className="text-sm text-gray-500">
@@ -145,18 +102,14 @@ const SearchFeed: React.FC = () => {
                 >
                   Upvote
                 </button>
-                <span>
-                  {query.upvotesCount} Upvotes
-                </span>
+                <span>{query.upvotesCount} Upvotes</span>
                 <button
                   className="text-red-500 hover:text-red-700"
                   onClick={() => handleVote(query.id || query.queryID, "DOWNVOTE")}
                 >
                   Downvote
                 </button>
-                <span>
-                  {query.downvotesCount} Downvotes
-                </span>
+                <span>{query.downvotesCount} Downvotes</span>
               </div>
 
               <div className="mt-2">
@@ -165,9 +118,9 @@ const SearchFeed: React.FC = () => {
                   query.answers.map((answer: any, index: number) => (
                     <div key={index} className="p-2 border-t">
                       <p>{answer.content}</p>
-
                       <div className="text-sm text-gray-500 flex flex-row">
-                        {answer.createdAt && new Date(answer.createdAt).toLocaleString()} by {answer.creatorName || "Anonymous"}
+                        {answer.createdAt && new Date(answer.createdAt).toLocaleString()} by{" "}
+                        {answer.creatorName || "Anonymous"}
                         {answer.isOfficial && (
                           <span className="text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full ml-2">
                             Official
@@ -201,4 +154,4 @@ const SearchFeed: React.FC = () => {
   );
 };
 
-export default SearchFeed;
+export default TrendingFeed;
