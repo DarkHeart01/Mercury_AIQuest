@@ -186,6 +186,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuButton>
         </Link>
       </SidebarMenu>
+      <SidebarMenu>
+        <Link to="/Analytics">
+          <SidebarMenuButton>
+            Analytics
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
       <SidebarContent>
         <NavMain
           items={data.navMain.map((item) => {

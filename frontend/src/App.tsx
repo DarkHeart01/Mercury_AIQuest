@@ -10,6 +10,7 @@ import GitTalk from "@/pages/gittalk";
 import DocSense from "@/pages/docsense";
 import LandingPage from "@/pages/newLanding";
 import CreatePostPage from "./pages/CreatePost";
+import AnalyticsPage from "./pages/AnalyticsPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/gittalk" element={<GitTalk />} />
           <Route path="/Feed" element={<Feed />} />
           <Route path="/CreatPost" element={<CreatePostPage />} />
+          <Route path='/Analytics' element={<AnalyticsPage />} />
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
         </Routes>
