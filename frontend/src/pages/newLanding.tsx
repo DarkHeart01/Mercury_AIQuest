@@ -104,7 +104,7 @@ export default function ChatPage() {
 
         {/* Chat Input Area */}
         <form
-          className="relative rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 w-full max-w-md joyride-input"
+          className="relative rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 w-[850px] joyride-input"
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();

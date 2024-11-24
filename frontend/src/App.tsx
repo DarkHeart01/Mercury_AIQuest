@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { Page as SettingsPage } from "@/pages/Settings";
 import ProfileSettingsPage from "@/pages/ProfilePage";
 import Feed from "@/pages/Feed";
-import Landing from "@/pages/Landing";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import GitTalk from "@/pages/gittalk";

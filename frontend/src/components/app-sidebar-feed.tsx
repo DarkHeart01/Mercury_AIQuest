@@ -18,7 +18,7 @@ import {
   StickyNote,
   Award,
   Settings,
-} from "lucide-react"
+} from "lucide-react";
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
