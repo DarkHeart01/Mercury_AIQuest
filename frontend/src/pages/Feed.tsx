@@ -33,6 +33,7 @@ const SearchFeed: React.FC = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
+  const [userId] = useState(2); // Hardcoded userId for the purpose of the example
 
   useEffect(() => {
     // Fetch the entire feed initially
@@ -67,6 +68,38 @@ const SearchFeed: React.FC = () => {
     }
   };
 
+  const handleVote = async (queryId: number, type: "UPVOTE" | "DOWNVOTE") => {
+    try {
+      const response = await axios.post(
+        `http://65.1.43.251/api/query/queries/${queryId}/vote`,
+        {
+          userId,
+          type
+        }
+      );
+      // Update the query's upvote/downvote count after voting
+      setQueries((prevQueries) =>
+        prevQueries.map((query) =>
+          query.id === queryId
+            ? {
+                ...query,
+                upvotesCount:
+                  type === "UPVOTE"
+                    ? (query.upvotesCount || 0) + 1
+                    : query.upvotesCount,
+                downvotesCount:
+                  type === "DOWNVOTE"
+                    ? (query.downvotesCount || 0) + 1
+                    : query.downvotesCount,
+              }
+            : query
+        )
+      );
+    } catch (error) {
+      console.error("Error voting:", error);
+    }
+  };
+
   return (
     <>
       <AppSidebar />
@@ -96,17 +129,39 @@ const SearchFeed: React.FC = () => {
         )}
 
         <div>
-          {queries.map((query) => (
+          {queries.map((query: any) => (
             <div key={query.id || query.queryID} className="border p-4 mb-4 rounded shadow">
               <h2 className="text-xl font-bold">{query.content}</h2>
               <div className="text-sm text-gray-500">
                 {query.createdAt && new Date(query.createdAt).toLocaleString()}
               </div>
 
+              {/* Voting Buttons */}
+              <div className="mt-4 flex items-center space-x-4">
+                <button
+                  className="text-green-500 hover:text-green-700"
+                  onClick={() => handleVote(query.id || query.queryID, "UPVOTE")}
+                >
+                  Upvote
+                </button>
+                <span>
+                  {query.upvotesCount} Upvotes
+                </span>
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => handleVote(query.id || query.queryID, "DOWNVOTE")}
+                >
+                  Downvote
+                </button>
+                <span>
+                  {query.downvotesCount} Downvotes
+                </span>
+              </div>
+
               <div className="mt-2">
                 <h3 className="font-semibold">Answers:</h3>
                 {query.answers.length > 0 ? (
-                  query.answers.map((answer, index) => (
+                  query.answers.map((answer: any, index: number) => (
                     <div key={index} className="p-2 border-t">
                       <p>{answer.content}</p>
                       <div className="text-sm text-gray-500">
@@ -121,7 +176,7 @@ const SearchFeed: React.FC = () => {
 
               {query.tags && (
                 <div className="mt-2 flex gap-2">
-                  {query.tags.map((tag) => (
+                  {query.tags.map((tag: any) => (
                     <span
                       key={tag.id}
                       className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
