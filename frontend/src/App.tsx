@@ -19,7 +19,7 @@ function App() {
           <Route path="/docsense" element={<DocSense />} />
           <Route path="/gittalk" element={<GitTalk />} />
           <Route path="/Feed" element={<Feed />} />
-          <Route path="/Landing" element={<Landing />} />
+          <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
         </Routes>
       </Router>
