@@ -23,7 +23,7 @@ export default function ChatPage() {
   return (
     <SidebarProvider>
         <AppSidebar />
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
+        <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground">
       <div className="text-center mb-6">
         <h1 className="text-2xl font-bold">What can I help you with?</h1>
       </div>
