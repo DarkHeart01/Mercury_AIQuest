@@ -9,6 +9,7 @@ import { AppSidebar } from "@/components/app-sidebar-feed";
 import GitTalk from "@/pages/gittalk";
 import DocSense from "@/pages/docsense";
 import LandingPage from "@/pages/newLanding";
+import CreatePostPage from "./pages/CreatePost";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/docsense" element={<DocSense />} />
           <Route path="/gittalk" element={<GitTalk />} />
           <Route path="/Feed" element={<Feed />} />
+          <Route path="/CreatPost" element={<CreatePostPage />} />
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
         </Routes>

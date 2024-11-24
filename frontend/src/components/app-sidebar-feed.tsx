@@ -63,24 +63,26 @@ const data = {
   ],
   navMain: [
     {
-      title: "Posts",
-      url: "#",
+      title: "Feed",
       icon: StickyNote,
       isActive: true,
       items: [
+        {
+          title: "Feed",
+          url: "/feed",
+        },
+        {
+          title: "Create Post",
+          url: "/CreatPost",
+        },
         {
           title: "Liked Posts",
           url: "/Feed",
         },
         {
-          title: "Latest Posts",
-          url: "#",
-        },
-        {
           title: "Trending Posts",
           url: "#",
         },
-
       ],
     },
     {
