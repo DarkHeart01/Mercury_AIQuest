@@ -77,24 +77,6 @@
   }
 }
 
-@layer base {
-  :root {
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
-
-  .dark {
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-  }
-}
-
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -121,10 +103,12 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
   min-width: 320px;
   min-height: 100vh;
+  height: 100%;
+  background-color: var(--background);
 }
 
 h1 {
@@ -151,6 +135,32 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* New Chat Container Style */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px); /* Adjust based on header height */
+}
+
+.chat-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.chat-footer {
+  margin-top: auto;
+  padding: 8px;
+}
+
+@media (min-width: 768px) {
+  .chat-container {
+    width: 100%;
+    max-width: 768px;
+    margin: 0 auto;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -163,12 +173,3 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
-/*@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}*/

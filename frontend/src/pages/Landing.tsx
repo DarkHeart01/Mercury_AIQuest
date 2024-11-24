@@ -1,5 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
+import { ChatInput } from "@/components/ui/chat/chat-input"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ import { FaSpinner } from "react-icons/fa"; // Importing the loading spinner fro
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/outline"; // Importing the search icon
 import { useState } from "react";
 import "./Landing.css";
+import Logo from "@/images/MERCAI.png";
 import { Link } from "react-router-dom";
 
 export default function Landing({ children }: { children: React.ReactNode }) {
@@ -43,14 +45,14 @@ export default function Landing({ children }: { children: React.ReactNode }) {
         <main className="flex-1 flex flex-col items-center justify-center h-screen pl-[260px]"> {/* Adjust left padding for sidebar */}
           {/* Logo */}
           <div className="absolute top-2 w-full flex justify-center">
-            <img src="#" alt="Logo" className="h-16 w-auto" />
+            <img src={ Logo } alt="Logo" className="h-16 w-auto" />
           </div>
 
           {/* Search Bar with Magnifying Glass Icon */}
           <div className="absolute bottom-8 w-full px-4 flex justify-center">
             <div className="relative w-[80%]">
               <form onSubmit={handleSearchSubmit}>
-                <Input
+                <ChatInput
                   type="text"
                   placeholder="Search..."
                   value={searchQuery}

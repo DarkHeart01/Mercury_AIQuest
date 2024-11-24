@@ -35,6 +35,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom";
+import Joyride, { Step } from "react-joyride";
+
 // This is sample data.
 const data = {
   user: {
@@ -155,20 +157,44 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarMenu>
-      <Link to="/Landing">
-            <SidebarMenuButton>
-              Mercury AI Chatbot
-            </SidebarMenuButton>
-          </Link>
-        </SidebarMenu>
+        <Link to="/Landing">
+          <SidebarMenuButton>
+            Mercury AI
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
+      <SidebarMenu>
+        <Link to="/gittalk">
+          <SidebarMenuButton>
+            GitTalk
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
+      <SidebarMenu>
+        <Link to="/docsense">
+          <SidebarMenuButton>
+            DocSense
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain
+          items={data.navMain.map((item) => {
+            if (item.title === "GitTalk") {
+              return { ...item, id: "gittalk" }; // Add id and class
+            } else if (item.title === "DocSense") {
+              return { ...item, id: "docsense" }; // Add id and class
+            }
+            return item;
+          })}
+        />
 
         <NavProjects projects={data.projects} />
       </SidebarContent>
@@ -179,4 +205,3 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     </Sidebar>
   )
 }
-
