@@ -170,14 +170,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarMenu>
       <SidebarMenu>
         <Link to="/gittalk">
-          <SidebarMenuButton>
+          <SidebarMenuButton className="joyride-gittalk">
             GitTalk
           </SidebarMenuButton>
         </Link>
       </SidebarMenu>
       <SidebarMenu>
         <Link to="/docsense">
-          <SidebarMenuButton>
+          <SidebarMenuButton className="joyride-docsense">
             DocSense
           </SidebarMenuButton>
         </Link>
@@ -192,10 +192,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain
           items={data.navMain.map((item) => {
-            if (item.title === "GitTalk") {
-              return { ...item, id: "gittalk" }; // Add id and class
-            } else if (item.title === "DocSense") {
-              return { ...item, id: "docsense" }; // Add id and class
+            if (item.title === "Feed") {
+              return { ...item, dataTourId: "joyride-feed" }; // Add id and class
             }
             return item;
           })}

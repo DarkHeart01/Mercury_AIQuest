@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactJoyride, { Step } from "react-joyride";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,32 @@ export default function ChatPage() {
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Joyride state
+  const [isTourActive, setIsTourActive] = useState(true);
+
+  const joyrideSteps: Step[] = [
+    {
+      target: ".joyride-logo",
+      content: "Welcome to Mercury, your personal Company AI assistant!",
+    },
+    {
+      target: ".joyride-input",
+      content: "Type your query here and hit 'Send' to get results!",
+    },
+    {
+      target: ".joyride-gittalk",
+      content: "This is GitTalk: Here you can chat directly with your repository's files!",
+    },
+    {
+      target: ".joyride-docsense",
+      content: "This is DocSense: Here you can chat directly with your company's documents!",
+    },
+    {
+      target: '[data-tour-id="joyride-feed"]',
+      content: "This is DocSense: Here you can chat directly with your company's documents!",
+    },
+  ];
 
   const handleSend = async () => {
     if (!query.trim()) return; // Prevent empty queries
@@ -42,21 +69,34 @@ export default function ChatPage() {
 
   return (
     <>
+      <ReactJoyride
+        steps={joyrideSteps}
+        continuous
+        scrollToFirstStep
+        showProgress
+        showSkipButton
+        run={isTourActive}
+        styles={{
+          options: {
+            zIndex: 10000,
+          },
+        }}
+      />
       <AppSidebar />
       <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground">
 
         {/* Logo Section */}
-        <div className="absolute top-2 w-full flex justify-center">
+        <div className="absolute top-2 w-full flex justify-center joyride-logo">
           <img src={Logo} alt="Logo" className="h-16 w-auto" />
         </div>
 
         {/* Main Header */}
-        <div className="text-center mb-6 mt-20">
+        <div className="text-center mb-6 mt-20 joyride-header">
           <h1 className="text-2xl font-bold">What can I help you with?</h1>
         </div>
 
         {/* Tags Section */}
-        <div className="flex flex-wrap justify-center gap-2 mb-6">
+        <div className="flex flex-wrap justify-center gap-2 mb-6 joyride-tags">
           <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">Search Queries</span>
           <span className="border border-solid border-blue-500 text-white px-4 py-2 rounded-full text-sm">Search Answers</span>
           <span className="border border-solid border-green-500 text-white px-4 py-2 rounded-full text-sm">Search Keywords</span>
@@ -64,7 +104,7 @@ export default function ChatPage() {
 
         {/* Chat Input Area */}
         <form
-          className="relative rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 w-full max-w-md"
+          className="relative rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 w-full max-w-md joyride-input"
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
@@ -99,7 +139,7 @@ export default function ChatPage() {
         </form>
 
         {/* Results Section */}
-        <div className="mt-6 w-full max-w-md">
+        <div className="mt-6 w-full max-w-md joyride-results">
           {loading && <p className="text-center text-sm">Loading...</p>}
           {error && <p className="text-center text-sm text-red-500">{error}</p>}
 
