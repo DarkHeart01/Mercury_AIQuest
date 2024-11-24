@@ -7,6 +7,7 @@ interface Answer {
   content: string;
   createdAt: string;
   creatorName?: string;
+  isOfficial: boolean; // Add the isOfficial field
 }
 
 interface Query {
@@ -82,16 +83,16 @@ const SearchFeed: React.FC = () => {
         prevQueries.map((query) =>
           query.id === queryId
             ? {
-                ...query,
-                upvotesCount:
-                  type === "UPVOTE"
-                    ? (query.upvotesCount || 0) + 1
-                    : query.upvotesCount,
-                downvotesCount:
-                  type === "DOWNVOTE"
-                    ? (query.downvotesCount || 0) + 1
-                    : query.downvotesCount,
-              }
+              ...query,
+              upvotesCount:
+                type === "UPVOTE"
+                  ? (query.upvotesCount || 0) + 1
+                  : query.upvotesCount,
+              downvotesCount:
+                type === "DOWNVOTE"
+                  ? (query.downvotesCount || 0) + 1
+                  : query.downvotesCount,
+            }
             : query
         )
       );
@@ -164,8 +165,14 @@ const SearchFeed: React.FC = () => {
                   query.answers.map((answer: any, index: number) => (
                     <div key={index} className="p-2 border-t">
                       <p>{answer.content}</p>
-                      <div className="text-sm text-gray-500">
+
+                      <div className="text-sm text-gray-500 flex flex-row">
                         {answer.createdAt && new Date(answer.createdAt).toLocaleString()} by {answer.creatorName || "Anonymous"}
+                        {answer.isOfficial && (
+                          <span className="text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full ml-2">
+                            Official
+                          </span>
+                        )}
                       </div>
                     </div>
                   ))
