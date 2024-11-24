@@ -1,210 +1,142 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { AppSidebar } from "@/components/app-sidebar-feed";
-import {
-  ArrowUpCircleIcon,
-  ArrowDownCircleIcon,
-  ArrowRightIcon,
-  PlusCircleIcon,
-  BellIcon,
-  HomeIcon,
-  MagnifyingGlassCircleIcon,
-} from "@heroicons/react/24/outline";
-import "@/pages/Feed.css";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
-import { Link } from "react-router-dom";
 
-export default function Feed({ children }: { children: React.ReactNode }) {
-  const handleIconClick = () => {
-    // Placeholder for future functionality, currently does nothing.
+// Define types for the API responses
+interface Answer {
+  content: string;
+  createdAt: string;
+  creatorName?: string;
+}
+
+interface Query {
+  id?: number;
+  queryID?: number;
+  content: string;
+  answers: Answer[];
+  createdAt?: string;
+  upvotesCount?: number;
+  downvotesCount?: number;
+  answersCount?: number;
+  tags?: { id: number; name: string }[];
+}
+
+interface APIResponse {
+  results?: {
+    queries: Query[];
+  };
+  aiSuggestion?: string;
+}
+
+const SearchFeed: React.FC = () => {
+  const [queries, setQueries] = useState<Query[]>([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch the entire feed initially
+    const fetchFeed = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get<Query[]>("http://65.1.43.251/api/query/queries");
+        setQueries(response.data);
+      } catch (error) {
+        console.error("Error fetching feed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeed();
+  }, []);
+
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get<APIResponse>(
+        `http://65.1.43.251/api/query/search?search=${encodeURIComponent(search)}`
+      );
+      const { results, aiSuggestion } = response.data;
+      setQueries(results?.queries || []);
+      setAiSuggestion(aiSuggestion || null);
+    } catch (error) {
+      console.error("Error searching queries:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <SidebarProvider>
+    <>
       <AppSidebar />
-      <main>
-        {/* Add Search Bar with Plus Circle Icon */}
-        <div className="search-bar-container relative border-2 border-black">
+      <div className="p-4 w-full">
+        <div className="mb-4">
           <input
             type="text"
-            placeholder="Search..."
-            className="search-bar focus:ring-0 focus:border-black outline-none"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search queries..."
+            className="border rounded p-2 w-full"
           />
-          {/*Adding Search Icon*/}
-          <MagnifyingGlassCircleIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-8 w-8 text-gray-500"/>
           <button
-            onClick={handleIconClick}
-            className="absolute right-16 top-1/2 transform -translate-y-1/2"
-            aria-label="Add"
+            onClick={handleSearch}
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-600"
           >
-            <PlusCircleIcon className="h-8 w-8 text-black strokeWidth={1} " />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute right-8 top-1/2 transform -translate-y-1/2"
-            aria-label="Notifications"
-          >
-            <BellIcon className="h-8 w-8 text-black" />
+            Search
           </button>
         </div>
 
-        {/* Add Full-Width Card 1 */}
-        <div className="full-width-card relative">
-          <button
-            onClick={handleIconClick}
-            className="absolute top-1 left-0"
-            aria-label="Arrow Up"
-          >
-            <ArrowUpCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-1 left-0"
-            aria-label="Arrow Down"
-          >
-            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-0 right-0"
-            aria-label="Arrow Right"
-          >
-            <ArrowRightIcon className="h-8 w-8 text-black" />
-          </button>
-          <div className="relative -top-2">
-            <h2 className="card-title">Post Title</h2>
-            <p className="card-content">
-              This is a full-width card. You can use it to display
-              announcements, summaries, or other info.
-            </p>
+        {loading && <p>Loading...</p>}
+
+        {aiSuggestion && (
+          <div className="p-4 mb-4 bg-gray-100 rounded">
+            <strong>AI Suggestion:</strong> {aiSuggestion}
           </div>
+        )}
+
+        <div>
+          {queries.map((query) => (
+            <div key={query.id || query.queryID} className="border p-4 mb-4 rounded shadow">
+              <h2 className="text-xl font-bold">{query.content}</h2>
+              <div className="text-sm text-gray-500">
+                {query.createdAt && new Date(query.createdAt).toLocaleString()}
+              </div>
+
+              <div className="mt-2">
+                <h3 className="font-semibold">Answers:</h3>
+                {query.answers.length > 0 ? (
+                  query.answers.map((answer, index) => (
+                    <div key={index} className="p-2 border-t">
+                      <p>{answer.content}</p>
+                      <div className="text-sm text-gray-500">
+                        {answer.createdAt && new Date(answer.createdAt).toLocaleString()} by {answer.creatorName || "Anonymous"}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>No answers yet.</p>
+                )}
+              </div>
+
+              {query.tags && (
+                <div className="mt-2 flex gap-2">
+                  {query.tags.map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
+                    >
+                      {tag.name}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-
-        {/* Add Full-Width Card 2 */}
-        <div className="full-width-card relative">
-          <button
-            onClick={handleIconClick}
-            className="absolute top-1 left-0"
-            aria-label="Arrow Up"
-          >
-            <ArrowUpCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-1 left-0"
-            aria-label="Arrow Down"
-          >
-            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-0 right-0"
-            aria-label="Arrow Right"
-          >
-            <ArrowRightIcon className="h-8 w-8 text-black" />
-          </button>
-          <div className="relative -top-2">
-            <h2 className="card-title">Post Title</h2>
-            <p className="card-content">
-              This is a full-width card. You can use it to display
-              announcements, summaries, or other info.
-            </p>
-          </div>
-        </div>
-
-        {/* Add Full-Width Card 3 */}
-        <div className="full-width-card relative">
-          <button
-            onClick={handleIconClick}
-            className="absolute top-1 left-0"
-            aria-label="Arrow Up"
-          >
-            <ArrowUpCircleIcon className="h-8 w-8 text-black-400" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-1 left-0"
-            aria-label="Arrow Down"
-          >
-            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-0 right-0"
-            aria-label="Arrow Right"
-          >
-            <ArrowRightIcon className="h-8 w-8 text-black" />
-          </button>
-          <div className="relative -top-2">
-            <h2 className="card-title">Post Title</h2>
-            <p className="card-content">
-              This is a full-width card. You can use it to display
-              announcements, summaries, or other info.
-            </p>
-          </div>
-        </div>
-
-        {/* Add Full-Width Card 4 */}
-        <div className="full-width-card relative">
-          <button
-            onClick={handleIconClick}
-            className="absolute top-1 left-0"
-            aria-label="Arrow Up"
-          >
-            <ArrowUpCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-1 left-0"
-            aria-label="Arrow Down"
-          >
-            <ArrowDownCircleIcon className="h-8 w-8 text-black" />
-          </button>
-          <button
-            onClick={handleIconClick}
-            className="absolute bottom-0 right-0"
-            aria-label="Arrow Right"
-          >
-            <ArrowRightIcon className="h-8 w-8 text-black" />
-          </button>
-          <div className="relative -top-2">
-            <h2 className="card-title">Post Title</h2>
-            <p className="card-content">
-              This is a full-width card. You can use it to display
-              announcements, summaries, or other info.
-            </p>
-          </div>
-        </div>
-
-        {children}
-
-        {/* Footer Section */}
-        <footer className="footer bg-gray-200 text-black py-2 text-center mt-8">
-          <p>&copy; {new Date().getFullYear()} Mercury AI. All rights reserved.</p>
-          {/*<div className="mt-2">
-            <a href="/privacy-policy" className="text-black hover:text-gray-400 mx-2">Privacy Policy</a>
-            <a href="/terms-of-service" className="text-black hover:text-gray-400 mx-2">Terms of Service</a>
-            <a href="/contact-us" className="text-black hover:text-gray-400 mx-2">Contact Us</a>
-          </div>*/}
-        </footer>
-      </main>
-    </SidebarProvider>
+      </div>
+    </>
   );
-}
+};
+
+export default SearchFeed;

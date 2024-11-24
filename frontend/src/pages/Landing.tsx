@@ -23,7 +23,7 @@ export default function Landing({ children }: { children: React.ReactNode }) {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-  };
+  };  
 
   const handleSearchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
