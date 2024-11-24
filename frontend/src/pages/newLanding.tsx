@@ -41,16 +41,25 @@ export default function ChatPage() {
   };
 
   return (
-    <SidebarProvider>
+    <>
       <AppSidebar />
       <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground">
 
+        {/* Logo Section */}
         <div className="absolute top-2 w-full flex justify-center">
           <img src={Logo} alt="Logo" className="h-16 w-auto" />
         </div>
 
-        <div className="text-center mb-6">
+        {/* Main Header */}
+        <div className="text-center mb-6 mt-20">
           <h1 className="text-2xl font-bold">What can I help you with?</h1>
+        </div>
+
+        {/* Tags Section */}
+        <div className="flex flex-wrap justify-center gap-2 mb-6">
+          <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">Search Queries</span>
+          <span className="border border-solid border-blue-500 text-white px-4 py-2 rounded-full text-sm">Search Answers</span>
+          <span className="border border-solid border-green-500 text-white px-4 py-2 rounded-full text-sm">Search Keywords</span>
         </div>
 
         {/* Chat Input Area */}
@@ -134,6 +143,6 @@ export default function ChatPage() {
           )}
         </div>
       </div>
-    </SidebarProvider>
+    </>
   );
 }
