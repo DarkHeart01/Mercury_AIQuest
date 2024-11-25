@@ -6,7 +6,21 @@ import { Alert } from '@/components/ui/alert';
 import { Label } from '@/components/ui/label';
 import { Avatar } from '@/components/ui/avatar';
 import { Link } from "react-router-dom";
-
+import { AppSidebar } from "@/components/app-sidebar"
+import { 
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 const ProfileSettingsPage: React.FC = () => {
     return (
     <SidebarProvider>
@@ -25,6 +39,10 @@ const ProfileSettingsPage: React.FC = () => {
               <BreadcrumbItem>
                 <BreadcrumbPage>Settings</BreadcrumbPage>
               </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>ProfilePage</BreadcrumbPage>
+              </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
@@ -38,7 +56,7 @@ const ProfileSettingsPage: React.FC = () => {
         </div>
       </SidebarInset>
 
-        <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6">
             <Card className="shadow-md bg-white">
                 <div className="tab-pane fade active show" id="account-general">
                     {/* Profile Avatar Section */}
@@ -125,7 +143,10 @@ const ProfileSettingsPage: React.FC = () => {
                 </div>
             </Card>
         </div>
+
+    </SidebarProvider>
     );
 };
 
 export default ProfileSettingsPage;
+        

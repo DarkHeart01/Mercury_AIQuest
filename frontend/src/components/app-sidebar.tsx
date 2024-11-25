@@ -49,7 +49,7 @@ const data = {
       items: [
         {
           title: "My Account",
-          url: "@/ProfilePage",
+          url: "Settings/profilepage",
         },
         {
           title: "Change Password",

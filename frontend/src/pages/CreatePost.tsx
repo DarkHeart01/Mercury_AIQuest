@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AppSidebar } from "@/components/app-sidebar-feed";
-import './createpost.css'; // Import your CSS file
+import "@/pages/CreatePost.css"; // Import your CSS file
 
 const CreatePostPage = () => {
     const [content, setContent] = useState("");
