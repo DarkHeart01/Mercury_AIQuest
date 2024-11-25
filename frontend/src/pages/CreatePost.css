@@ -21,7 +21,7 @@
 
 /* createpost opening page animation */
 
-.page-enter {
+/*.page-enter {
     opacity: 0;
     transform: translateY(-20px);
   }
@@ -30,5 +30,20 @@
     opacity: 1;
     transform: translateY(0);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }*/
+  /* createpost.css */
+
+/* Initial state of the page: small and invisible */
+.page-enter {
+    opacity: 0;
+    transform: scale(0.95);
   }
+  
+  /* After triggering the animation: full size and visible */
+  .page-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+  
   

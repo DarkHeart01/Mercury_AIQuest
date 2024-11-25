@@ -137,3 +137,36 @@
 .card-content {
   @apply text-base text-gray-600;
 }
+
+/*Page animation*/
+
+/* feed.css */
+
+/* Initial state: content hidden and slightly scaled */
+.page-enter {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* Final state: content visible and at full scale */
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* Align the query box content to the left */
+.query-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  width: 100%;
+  padding: 20px; 
+  margin-bottom: 16px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+
