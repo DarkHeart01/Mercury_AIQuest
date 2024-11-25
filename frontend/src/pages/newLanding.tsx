@@ -5,7 +5,8 @@ import { AppSidebar } from "@/components/app-sidebar-feed";
 import { Button } from "@/components/ui/button";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { Paperclip, Mic, CornerDownLeft, Loader } from "lucide-react";
-import Logo from "@/images/MERCAI.png";
+import Logo from "@/images/merc.png";
+import './newLanding.css';
 
 export default function ChatPage() {
   const [query, setQuery] = useState("");
@@ -94,20 +95,20 @@ export default function ChatPage() {
         }}
       />
       <AppSidebar />
-      <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground relative">
+      <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground relative page-fade-in">
 
         {/* Logo Section */}
-        <div className="absolute top-2 w-full flex justify-center joyride-logo">
+        <div className="absolute top-2 w-full flex justify-center joyride-logo slide-up">
           <img src={Logo} alt="Logo" className="h-16 w-auto" />
         </div>
 
         {/* Header */}
-        <div className="text-center mb-6 mt-20 joyride-header">
+        <div className="text-center mb-6 mt-20 joyride-header slide-up delay-1s">
           <h1 className="text-2xl font-bold">What can I help you with?</h1>
         </div>
 
         {/* Tags Section */}
-        <div className="flex flex-wrap justify-center gap-2 mb-6 joyride-tags">
+        <div className="flex flex-wrap justify-center gap-2 mb-6 joyride-tags slide-up delay-2s">
           <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">
             Search Queries
           </span>
@@ -121,7 +122,7 @@ export default function ChatPage() {
 
         {/* Chat Input Area */}
         <form
-          className="w-[850px] rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 joyride-input"
+          className="w-[850px] rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s"
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
@@ -207,6 +208,7 @@ export default function ChatPage() {
     </>
   );
 }
+
 
 
 

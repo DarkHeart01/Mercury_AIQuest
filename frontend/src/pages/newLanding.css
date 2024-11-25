@@ -1,0 +1,40 @@
+/* Fade-in animation for the whole page */
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  /* Slide-up animation for elements */
+  @keyframes slideUp {
+    0% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Apply the fade-in effect to the whole page */
+  .page-fade-in {
+    animation: fadeIn 1s ease-out;
+  }
+  
+  /* Apply the slide-up effect to specific elements */
+  .slide-up {
+    animation: slideUp 1s ease-out;
+  }
+  
+  /* Optional: Delay animation for certain elements to create a staggered effect */
+  .delay-1s {
+    animation-delay: 1s;
+  }
+  .delay-2s {
+    animation-delay: 2s;
+  }
+  

@@ -107,12 +107,12 @@ const ContributePage: React.FC = () => {
   return (
     <>
       <AppSidebar />
-      <div className="p-4 w-full flex flex-col items-center justify-center bg-background">
-        <h1 className="text-3xl font-bold text-slate-300">Contribute to Docs & Repos</h1>
+      <div className="p-4 w-full flex flex-col items-center justify-center bg-background page-fade-in">
+        <h1 className="text-3xl font-bold text-slate-300 section-slide-up">Contribute to Docs & Repos</h1>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-10">
           {/* File Upload Section */}
-          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md">
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-1s">
             <h2 className="text-xl font-semibold text-slate-300">Upload a File</h2>
             <input
               type="file"
@@ -131,7 +131,7 @@ const ContributePage: React.FC = () => {
           </div>
 
           {/* GitHub Repository Upload Section */}
-          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md">
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-2s">
             <h2 className="text-xl font-semibold text-slate-300">Upload a GitHub Repository</h2>
             <input
               type="text"
@@ -169,3 +169,4 @@ const ContributePage: React.FC = () => {
 };
 
 export default ContributePage;
+
