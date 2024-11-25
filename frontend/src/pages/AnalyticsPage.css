@@ -1,0 +1,40 @@
+/* Apply animation to the entire container */
+.analytics-page-container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  /* Keyframe for the fade-in and slide-up effect */
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Optional: Adding a subtle scale effect for each chart */
+  .chart-card {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: scaleIn 0.8s ease-out forwards;
+    animation-delay: 0.2s; /* Adjust delay if necessary */
+  }
+  
+  /* Keyframe for scaling up the chart card */
+  @keyframes scaleIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  

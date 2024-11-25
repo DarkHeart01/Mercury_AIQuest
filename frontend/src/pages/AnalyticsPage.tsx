@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button"; // Assuming you're using the Button component from your project
 import { AppSidebar } from "@/components/app-sidebar-feed";
+import './AnalyticsPage.css';
 
 const AnalyticsPage = () => {
     const [analyticsData, setAnalyticsData] = useState([]);
@@ -28,7 +29,7 @@ const AnalyticsPage = () => {
     // Render analytics charts for each tag
     const renderChart = (tagData: any) => {
         return (
-            <div className="m-4 w-full md:w-1/3 p-4 bg-white rounded-lg shadow-md">
+            <div className="m-4 w-full md:w-1/3 p-4 bg-white rounded-lg shadow-md chart-card">
                 <h3 className="text-lg font-semibold text-black mb-2">{tagData.tagName}</h3>
                 <ResponsiveContainer width="100%" height={300}>
                     <LineChart data={tagData.dailyData}>
@@ -71,7 +72,7 @@ const AnalyticsPage = () => {
     return (
         <>
             <AppSidebar />
-            <div className="flex flex-col w-full items-center">
+            <div className="analytics-page-container flex flex-col w-full items-center">
                 <h2 className="text-3xl font-bold">Analytics Overview</h2>
                 <div className="w-full h-full">
                     {rows.length > 0 ? (
@@ -91,3 +92,4 @@ const AnalyticsPage = () => {
 };
 
 export default AnalyticsPage;
+
