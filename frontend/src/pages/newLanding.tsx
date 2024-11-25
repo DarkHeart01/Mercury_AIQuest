@@ -15,6 +15,12 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Track if the search bar should move to the bottom
+  const [isSearchBarAtBottom, setIsSearchBarAtBottom] = useState(false);
+
+  // Track if the AI suggestion is ready to display
+  const [aiReady, setAiReady] = useState(false);
+
   // Joyride state
   const [isTourActive, setIsTourActive] = useState(true);
 
@@ -56,8 +62,10 @@ export default function ChatPage() {
     setResults([]);
     setAiSuggestion("");
     setError(null);
+    setIsSearchBarAtBottom(true); // Move the search bar to the bottom
+    setAiReady(false); // Hide the AI suggestion until it's ready
 
-    // Simulate a 2-second loading spinner
+    // Simulate a 1-second loading spinner delay
     setTimeout(async () => {
       try {
         const response = await fetch(
@@ -75,8 +83,9 @@ export default function ChatPage() {
       } finally {
         setLoading(false); // Hide loading state
         setQuery(""); // Clear the input after sending
+        setAiReady(true); // Show AI suggestion after the delay
       }
-    }, 2000);
+    }, 1000); // 1 second delay
   };
 
   return (
@@ -103,26 +112,30 @@ export default function ChatPage() {
         </div>
 
         {/* Header */}
-        <div className="text-center mb-6 mt-20 joyride-header slide-up delay-1s">
-          <h1 className="text-2xl font-bold">What can I help you with?</h1>
-        </div>
+        {!isSearchBarAtBottom && (
+          <div className="text-center mb-6 mt-20 joyride-header slide-up delay-1s">
+            <h1 className="text-2xl font-bold">What can I help you with?</h1>
+          </div>
+        )}
 
         {/* Tags Section */}
-        <div className="flex flex-wrap justify-center gap-2 mb-6 joyride-tags slide-up delay-2s">
-          <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">
-            Search Queries
-          </span>
-          <span className="border border-solid border-blue-500 text-white px-4 py-2 rounded-full text-sm">
-            Search Answers
-          </span>
-          <span className="border border-solid border-green-500 text-white px-4 py-2 rounded-full text-sm">
-            Search Keywords
-          </span>
-        </div>
+        {!isSearchBarAtBottom && (
+          <div className="flex flex-wrap justify-center gap-2 mb-6 joyride-tags slide-up delay-2s">
+            <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">
+              Search Queries
+            </span>
+            <span className="border border-solid border-blue-500 text-white px-4 py-2 rounded-full text-sm">
+              Search Answers
+            </span>
+            <span className="border border-solid border-green-500 text-white px-4 py-2 rounded-full text-sm">
+              Search Keywords
+            </span>
+          </div>
+        )}
 
         {/* Chat Input Area */}
         <form
-          className="w-[850px] rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s"
+          className={`w-[850px] rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s ${isSearchBarAtBottom ? 'fixed bottom-4' : ''}`}
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
@@ -197,7 +210,7 @@ export default function ChatPage() {
           )}
 
           {/* AI Suggestion */}
-          {aiSuggestion && (
+          {aiReady && aiSuggestion && (
             <div className="mt-6 p-4 border rounded-lg bg-card">
               <h2 className="text-lg font-semibold">AI Suggestion</h2>
               <p className="text-sm">{aiSuggestion}</p>
@@ -208,6 +221,7 @@ export default function ChatPage() {
     </>
   );
 }
+
 
 
 
