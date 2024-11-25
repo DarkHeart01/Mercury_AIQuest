@@ -13,7 +13,6 @@ import TrendingFeed from "./pages/TrendingFeed";
 import ContributePage from "./pages/ContributePage";
 import QueryPage from "./pages/QueryPage";
 import { AuthProvider } from "@/components/AuthContext";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import LoginSignUp from "./pages/signin";
 
 function App() {
