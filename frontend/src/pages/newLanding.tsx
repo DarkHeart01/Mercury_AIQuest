@@ -43,11 +43,11 @@ export default function ChatPage() {
     },
     {
       target: ".joyride-contribute",
-      content: "This is DocSense: Here you can chat directly with your company's documents!",
+      content: "You can contirbute to the companys database of documents and GitHub Repos!",
     },
     {
       target: ".joyride-analytics",
-      content: "This is DocSense: Here you can chat directly with your company's documents!",
+      content: "Check out the analytics of queries and answers for each department!",
     },
     {
       target: ".joyride-feed",

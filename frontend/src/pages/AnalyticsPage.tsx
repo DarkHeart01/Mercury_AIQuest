@@ -72,7 +72,7 @@ const AnalyticsPage = () => {
     return (
         <>
             <AppSidebar />
-            <div className="analytics-page-container flex flex-col w-full items-center">
+            <div className="analytics-page-container m-5 flex flex-col w-full items-center">
                 <h2 className="text-3xl font-bold">Analytics Overview</h2>
                 <div className="w-full h-full">
                     {rows.length > 0 ? (
