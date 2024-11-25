@@ -41,6 +41,8 @@ const QueryPage: React.FC = () => {
     const { queryId } = useParams<{ queryId: string }>();
     const [query, setQuery] = useState<Query | null>(null);
     const [loading, setLoading] = useState(false);
+    const [answerContent, setAnswerContent] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
         const fetchQueryDetails = async () => {
@@ -61,6 +63,33 @@ const QueryPage: React.FC = () => {
             fetchQueryDetails();
         }
     }, [queryId]);
+
+    const handleAnswerSubmit = async () => {
+        if (!answerContent.trim()) return;
+
+        setSubmitting(true);
+        try {
+            const response = await axios.post(`http://65.1.43.251/api/query/queries/${queryId}/answer`, {
+                content: answerContent,
+                answerCreatorId: 4, // Replace with dynamic user ID if needed
+            });
+
+            console.log(response.data);
+
+            setQuery((prevQuery) => {
+                if (!prevQuery) return null;
+                return {
+                    ...prevQuery,
+                    answers: [response.data, ...prevQuery.answers],
+                };
+            });
+            setAnswerContent("");
+        } catch (error) {
+            console.error("Error submitting answer:", error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     const handleMarkOfficial = async (answerId: number) => {
         try {
@@ -103,16 +132,16 @@ const QueryPage: React.FC = () => {
                     answers: prevQuery.answers.map((answer) =>
                         answer.id === answerId
                             ? {
-                                ...answer,
-                                upvotesCount:
-                                    type === "UPVOTE"
-                                        ? answer.upvotesCount + 1
-                                        : answer.upvotesCount,
-                                downvotesCount:
-                                    type === "DOWNVOTE"
-                                        ? answer.downvotesCount + 1
-                                        : answer.downvotesCount,
-                            }
+                                  ...answer,
+                                  upvotesCount:
+                                      type === "UPVOTE"
+                                          ? answer.upvotesCount + 1
+                                          : answer.upvotesCount,
+                                  downvotesCount:
+                                      type === "DOWNVOTE"
+                                          ? answer.downvotesCount + 1
+                                          : answer.downvotesCount,
+                              }
                             : answer
                     ),
                 };
@@ -133,11 +162,28 @@ const QueryPage: React.FC = () => {
     return (
         <>
             <AppSidebar />
-            <div className="w-full mt-10 flex justify-center">
+            <div className="w-full mt-5 flex justify-center">
                 <div className="p-4 w-[65%]">
                     <h1 className="text-2xl font-bold w-[65%]">{query.content}</h1>
                     <div className="text-sm text-gray-500">
                         {new Date(query.createdAt).toLocaleString()}
+                    </div>
+
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold">Submit Your Answer</h2>
+                        <textarea
+                            className="w-full border rounded p-2 mt-2"
+                            value={answerContent}
+                            onChange={(e) => setAnswerContent(e.target.value)}
+                            placeholder="Write your answer here..."
+                        />
+                        <button
+                            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            onClick={handleAnswerSubmit}
+                            disabled={submitting}
+                        >
+                            {submitting ? "Submitting..." : "Submit Answer"}
+                        </button>
                     </div>
 
                     <div className="mt-4">
@@ -149,8 +195,8 @@ const QueryPage: React.FC = () => {
                             >
                                 <p>{answer.content}</p>
                                 <div className="text-sm text-gray-500">
-                                    {new Date(answer.createdAt).toLocaleString()} by{" "}
-                                    {answer.answerCreator.email}
+                                    {new Date(answer.createdAt).toLocaleString()} by {" "}
+                                    {answer.answerCreator?.email}
                                     {answer.isOfficial && (
                                         <span className="ml-2 text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full">
                                             Official
