@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import { AppSidebar } from "@/components/app-sidebar-feed";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 interface Query {
     id: number;
@@ -14,7 +14,9 @@ interface Query {
         id: number;
         email: string;
         designation: string;
-        department: { name: string };
+        department: {
+            name: string;
+        };
     };
     tags: { id: number; name: string }[];
     votes: { id: number; queryId: number; userId: number; type: string }[];
@@ -27,7 +29,11 @@ interface Query {
         upvotesCount: number;
         downvotesCount: number;
         isOfficial: boolean;
-        answerCreator: { id: number; email: string; designation: string };
+        answerCreator: {
+            id: number;
+            email: string;
+            designation: string;
+        };
     }[];
 }
 
@@ -35,7 +41,6 @@ const QueryPage: React.FC = () => {
     const { queryId } = useParams<{ queryId: string }>();
     const [query, setQuery] = useState<Query | null>(null);
     const [loading, setLoading] = useState(false);
-    const [userId] = useState(3); // Hardcoded userId for the example
 
     useEffect(() => {
         const fetchQueryDetails = async () => {
@@ -57,111 +62,130 @@ const QueryPage: React.FC = () => {
         }
     }, [queryId]);
 
-    const handleVote = async (type: "UPVOTE" | "DOWNVOTE") => {
-        if (!query) return;
-
+    const handleMarkOfficial = async (answerId: number) => {
         try {
-            await axios.post(
-                `http://65.1.43.251/api/query/queries/${query.id}/vote`,
-                { userId, type }
-            );
+            const userId = 7; // Replace with dynamic userId if needed
+            await axios.post(`http://65.1.43.251/api/query/answers/${answerId}/markOfficial`, {
+                userId,
+            });
 
-            setQuery((prevQuery) =>
-                prevQuery
-                    ? {
-                        ...prevQuery,
-                        upvotesCount:
-                            type === "UPVOTE"
-                                ? prevQuery.upvotesCount + 1
-                                : prevQuery.upvotesCount,
-                        downvotesCount:
-                            type === "DOWNVOTE"
-                                ? prevQuery.downvotesCount + 1
-                                : prevQuery.downvotesCount,
-                    }
-                    : null
-            );
+            setQuery((prevQuery) => {
+                if (!prevQuery) return null;
+                return {
+                    ...prevQuery,
+                    answers: prevQuery.answers.map((answer) =>
+                        answer.id === answerId ? { ...answer, isOfficial: true } : answer
+                    ),
+                };
+            });
         } catch (error) {
-            console.error("Error voting:", error);
+            console.error("Error marking answer as official:", error);
+        }
+    };
+
+    const handleAnswerVote = async (
+        answerId: number,
+        queryId: number,
+        type: "UPVOTE" | "DOWNVOTE"
+    ) => {
+        try {
+            const userId = 5; // Replace with dynamic userId if needed
+            await axios.post(`http://65.1.43.251/api/query/answers/${answerId}/vote`, {
+                userId,
+                type,
+                queryId,
+            });
+
+            setQuery((prevQuery) => {
+                if (!prevQuery) return null;
+                return {
+                    ...prevQuery,
+                    answers: prevQuery.answers.map((answer) =>
+                        answer.id === answerId
+                            ? {
+                                ...answer,
+                                upvotesCount:
+                                    type === "UPVOTE"
+                                        ? answer.upvotesCount + 1
+                                        : answer.upvotesCount,
+                                downvotesCount:
+                                    type === "DOWNVOTE"
+                                        ? answer.downvotesCount + 1
+                                        : answer.downvotesCount,
+                            }
+                            : answer
+                    ),
+                };
+            });
+        } catch (error) {
+            console.error("Error voting on answer:", error);
         }
     };
 
     if (loading) {
-        return <div className="text-center">Loading...</div>;
+        return <div>Loading...</div>;
     }
 
     if (!query) {
-        return <div className="text-center">No Query Found</div>;
+        return <div>No query found.</div>;
     }
 
     return (
         <>
             <AppSidebar />
-            <div className="flex w-full justify-center ">
+            <div className="w-full mt-10 flex justify-center">
                 <div className="p-4 w-[65%]">
-                    <div className="border border-gray-300 rounded-lg shadow p-4">
-                        <h2 className="text-xl font-bold">{query.content}</h2>
-                        <p className="text-sm text-gray-500">
-                            {new Date(query.createdAt).toLocaleString()}
-                        </p>
+                    <h1 className="text-2xl font-bold w-[65%]">{query.content}</h1>
+                    <div className="text-sm text-gray-500">
+                        {new Date(query.createdAt).toLocaleString()}
+                    </div>
 
-                        {/* Voting Section */}
-                        <div className="mt-4 flex items-center gap-4">
-                            <button
-                                onClick={() => handleVote("UPVOTE")}
-                                className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                    <div className="mt-4">
+                        <h2 className="text-lg font-semibold">Answers</h2>
+                        {query.answers.map((answer) => (
+                            <div
+                                key={answer.id}
+                                className="p-4 border rounded mt-2 shadow-sm bg-background"
                             >
-                                Upvote
-                            </button>
-                            <span>{query.upvotesCount} Upvotes</span>
-                            <button
-                                onClick={() => handleVote("DOWNVOTE")}
-                                className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                            >
-                                Downvote
-                            </button>
-                            <span>{query.downvotesCount} Downvotes</span>
-                        </div>
+                                <p>{answer.content}</p>
+                                <div className="text-sm text-gray-500">
+                                    {new Date(answer.createdAt).toLocaleString()} by{" "}
+                                    {answer.answerCreator.email}
+                                    {answer.isOfficial && (
+                                        <span className="ml-2 text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full">
+                                            Official
+                                        </span>
+                                    )}
+                                </div>
 
-                        {/* Answers Section */}
-                        <div className="mt-6">
-                            <h3 className="font-semibold">Answers:</h3>
-                            {query.answers.length > 0 ? (
-                                query.answers.map((answer) => (
-                                    <div
-                                        key={answer.id}
-                                        className="border-t border-gray-300 mt-2 pt-2"
+                                <div className="mt-2 flex space-x-4">
+                                    <button
+                                        className="text-green-500 border border-green-500 px-2 py-1 rounded hover:bg-green-500 hover:text-white"
+                                        onClick={() =>
+                                            handleAnswerVote(answer.id, query.id, "UPVOTE")
+                                        }
                                     >
-                                        <p>{answer.content}</p>
-                                        <p className="text-sm text-gray-500">
-                                            {new Date(answer.createdAt).toLocaleString()} by{" "}
-                                            {answer.answerCreator.email}
-                                        </p>
-                                        {answer.isOfficial && (
-                                            <span className="text-xs bg-yellow-300 px-2 py-1 rounded-full">
-                                                Official
-                                            </span>
-                                        )}
-                                    </div>
-                                ))
-                            ) : (
-                                <p>No answers yet.</p>
-                            )}
-                        </div>
-
-                        {/* Tags Section */}
-                        {query.tags.length > 0 && (
-                            <div className="mt-4 flex flex-wrap gap-2">
-                                {query.tags.map((tag) => (
-                                    <span
-                                        key={tag.id}
-                                        className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
+                                        Upvote ({answer.upvotesCount})
+                                    </button>
+                                    <button
+                                        className="text-red-500 border border-red-500 px-2 py-1 rounded hover:bg-red-500 hover:text-white"
+                                        onClick={() =>
+                                            handleAnswerVote(answer.id, query.id, "DOWNVOTE")
+                                        }
                                     >
-                                        {tag.name}
-                                    </span>
-                                ))}
+                                        Downvote ({answer.downvotesCount})
+                                    </button>
+                                    {!answer.isOfficial && (
+                                        <button
+                                            className="text-blue-500 border border-blue-500 px-2 py-1 rounded hover:bg-blue-500 hover:text-white"
+                                            onClick={() => handleMarkOfficial(answer.id)}
+                                        >
+                                            Mark as Official
+                                        </button>
+                                    )}
+                                </div>
                             </div>
-                        )}
+                        ))}
                     </div>
                 </div>
             </div>
