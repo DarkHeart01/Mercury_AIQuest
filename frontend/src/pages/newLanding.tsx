@@ -45,7 +45,7 @@ export default function ChatPage() {
     },
     {
       target: ".joyride-feed",
-      content: "This is DocSense: Here you can chat directly with your company's documents!",
+      content: "You can check out the feed to see what's going on in your company!",
     },
   ];
 

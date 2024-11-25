@@ -26,6 +26,7 @@ export function NavMain({
     url: string
     icon?: LucideIcon
     isActive?: boolean
+    className?: string // Added className for customization
     items?: {
       title: string
       url: string
@@ -41,7 +42,7 @@ export function NavMain({
             key={item.title}
             asChild
             defaultOpen={item.isActive}
-            className="group/collapsible"
+            className={`group/collapsible ${item.className || ""}`} // Dynamically apply className
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>

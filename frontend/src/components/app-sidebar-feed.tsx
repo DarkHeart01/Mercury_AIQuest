@@ -184,7 +184,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarMenu>
       <SidebarMenu>
         <Link to="/Contribute">
-          <SidebarMenuButton  className="joyride-contribute">
+          <SidebarMenuButton className="joyride-contribute">
             Contribute
           </SidebarMenuButton>
         </Link>
@@ -200,11 +200,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain
           items={data.navMain.map((item) => {
             if (item.title === "Feed") {
-              return { ...item, classname: "joyride-feed" }; // Add id and class
+              return { ...item, className: "joyride-feed" }; // Correct key casing
             }
             return item;
           })}
         />
+
 
         <NavProjects projects={data.projects} />
       </SidebarContent>
