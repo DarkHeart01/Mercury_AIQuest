@@ -1,0 +1,20 @@
+/* CSS for the sending animation bar */
+@keyframes moveBar {
+    0% {
+        width: 0%;
+    }
+    50% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+.animate-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px; 
+    background-color: #3b82f6; 
+    animation: moveBar 3s linear;
+}

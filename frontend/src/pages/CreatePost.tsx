@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AppSidebar } from "@/components/app-sidebar-feed";
+import './CreatePost.css'; 
+
 
 const CreatePostPage = () => {
     const [content, setContent] = useState("");
@@ -10,6 +12,7 @@ const CreatePostPage = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [sending, setSending] = useState(false); // New state for sending
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -20,6 +23,7 @@ const CreatePostPage = () => {
         }
 
         setLoading(true);
+        setSending(true); // Start sending state
         setErrorMessage(null);
         setSuccessMessage(null);
 
@@ -51,6 +55,7 @@ const CreatePostPage = () => {
             setErrorMessage("An error occurred. Please try again.");
         } finally {
             setLoading(false);
+            setSending(false); // Reset sending state
         }
     };
 
@@ -95,9 +100,14 @@ const CreatePostPage = () => {
                         />
                     </div>
 
-                    <Button type="submit" className="w-full" disabled={loading}>
-                        {loading ? "Creating..." : "Create Post"}
-                    </Button>
+                    <div className="relative">
+                        {sending && (
+                            <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 animate-bar" />
+                        )}
+                        <Button type="submit" className="w-full" disabled={loading || sending}>
+                            {sending ? "Sending..." : loading ? "Creating..." : "Create Post"}
+                        </Button>
+                    </div>
                 </form>
             </div>
         </>
@@ -105,3 +115,4 @@ const CreatePostPage = () => {
 };
 
 export default CreatePostPage;
+
