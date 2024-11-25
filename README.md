@@ -5,6 +5,7 @@ Welcome to **Mercury AIQuest**, a multi-service application built to demonstrate
 ### 🌟 Quick Introduction
 
 [![Watch the Video](https://img.youtube.com/vi/l1pXpls1Vro/0.jpg)](https://www.youtube.com/watch?v=l1pXpls1Vro)
+---
 *Click on the thumbnail above to watch the short introduction video about Mercury AIQuest.*
 
 ---
