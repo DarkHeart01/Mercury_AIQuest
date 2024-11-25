@@ -4,7 +4,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Forward, Heart } from "lucide-react";
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
+import { CornerDownLeft, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   ChatBubble,
@@ -16,8 +16,8 @@ import {
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import MessageLoading from "@/components/ui/chat/message-loading";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import axios from "axios";
 
 import {
@@ -45,9 +45,8 @@ const DocSense = () => {
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileLoading, setFileLoading] = useState(true); // Loading indicator for files
-  
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false); // Message loading state
 
   // Fetch the list of files from the API on component mount
   useEffect(() => {
@@ -82,36 +81,39 @@ const DocSense = () => {
 
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInputValue("");
-    setIsLoading(true);
+    setIsLoading(true); // Start loading
 
-    try {
-      const queryWithPrefix = `With reference to ${selectedFile} file ${inputValue}`;
-      
-      // Send the message to the API
-      const response = await axios.post(
-        `http://65.1.43.251/api/talk/docs?query=${encodeURIComponent(queryWithPrefix)}`
-      );
+    // Simulate a 5-second delay for loading
+    setTimeout(async () => {
+      try {
+        const queryWithPrefix = `With reference to ${selectedFile} file ${inputValue}`;
 
-      const data = response.data;
+        // Send the message to the API
+        const response = await axios.post(
+          `http://65.1.43.251/api/talk/docs?query=${encodeURIComponent(queryWithPrefix)}`
+        );
 
-      // Add the AI response to the chat
-      const botMessage = {
-        id: messages.length + 2,
-        text: data.answer || "I couldn't process your request.",
-        sender: "bot",
-      };
+        const data = response.data;
 
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
-    } catch (error) {
-      const errorMessage = {
-        id: messages.length + 2,
-        text: "There was an error connecting to the server. Please try again later.",
-        sender: "bot",
-      };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
+        // Add the AI response to the chat
+        const botMessage = {
+          id: messages.length + 2,
+          text: data.answer || "I couldn't process your request.",
+          sender: "bot",
+        };
+
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } catch (error) {
+        const errorMessage = {
+          id: messages.length + 2,
+          text: "There was an error connecting to the server. Please try again later.",
+          sender: "bot",
+        };
+        setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      } finally {
+        setIsLoading(false); // Stop loading after the delay
+      }
+    }, 3000); // 3-second delay
   };
 
   const actionIcons = [
@@ -130,7 +132,7 @@ const DocSense = () => {
             {messages.map((message: any) => {
               const variant = message.sender === "user" ? "sent" : "received";
               return (
-                <ChatBubble key={message.id} variant={variant} >
+                <ChatBubble key={message.id} variant={variant}>
                   <ChatBubbleAvatar fallback={variant === "sent" ? "US" : "AI"} />
                   <ChatBubbleMessage
                     isLoading={message.isLoading}
@@ -161,6 +163,11 @@ const DocSense = () => {
                 </ChatBubble>
               );
             })}
+
+            {/* Loading Indicator */}
+            {isLoading && (
+              <MessageLoading className="flex justify-center items-center p-4" />
+            )}
           </ChatMessageList>
 
           {/* Chat Input */}
@@ -219,3 +226,4 @@ const DocSense = () => {
 };
 
 export default DocSense;
+
