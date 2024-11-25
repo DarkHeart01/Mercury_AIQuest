@@ -9,6 +9,35 @@ import { Link } from "react-router-dom";
 
 const ProfileSettingsPage: React.FC = () => {
     return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
+          <Separator orientation="vertical" className="mr-2 h-4" />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="@/Feed">
+                  <Link to="/Feed">Mercury</Link>
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Settings</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <div
+              key={index}
+              className="aspect-video h-12 w-full rounded-lg bg-muted/50"
+            />
+          ))}
+        </div>
+      </SidebarInset>
+
         <div className="container mx-auto p-6">
             <Card className="shadow-md bg-white">
                 <div className="tab-pane fade active show" id="account-general">
