@@ -4,7 +4,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import { Button } from "@/components/ui/button";
 import { ChatInput } from "@/components/ui/chat/chat-input";
-import { Paperclip, Mic, CornerDownLeft } from "lucide-react";
+import { Paperclip, Mic, CornerDownLeft, Loader } from "lucide-react";
 import Logo from "@/images/MERCAI.png";
 
 export default function ChatPage() {
@@ -43,28 +43,31 @@ export default function ChatPage() {
   const handleSend = async () => {
     if (!query.trim()) return; // Prevent empty queries
 
-    setLoading(true);
+    setLoading(true); // Show loading state
     setResults([]);
     setAiSuggestion("");
     setError(null);
 
-    try {
-      const response = await fetch(
-        `http://65.1.43.251/api/query/search?search=${encodeURIComponent(query)}`
-      );
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const data = await response.json();
+    // Simulate a 2-second loading spinner
+    setTimeout(async () => {
+      try {
+        const response = await fetch(
+          `http://65.1.43.251/api/query/search?search=${encodeURIComponent(query)}`
+        );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
 
-      setResults(data.results.queries || []);
-      setAiSuggestion(data.aiSuggestion || "No suggestion provided.");
-    } catch (err) {
-      setError("Failed to fetch results. Please try again.");
-    } finally {
-      setLoading(false);
-      setQuery(""); // Clear the input after sending
-    }
+        setResults(data.results.queries || []);
+        setAiSuggestion(data.aiSuggestion || "No suggestion provided.");
+      } catch (err) {
+        setError("Failed to fetch results. Please try again.");
+      } finally {
+        setLoading(false); // Hide loading state
+        setQuery(""); // Clear the input after sending
+      }
+    }, 2000);
   };
 
   return (
@@ -83,28 +86,34 @@ export default function ChatPage() {
         }}
       />
       <AppSidebar />
-      <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground">
+      <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground relative">
 
         {/* Logo Section */}
         <div className="absolute top-2 w-full flex justify-center joyride-logo">
           <img src={Logo} alt="Logo" className="h-16 w-auto" />
         </div>
 
-        {/* Main Header */}
+        {/* Header */}
         <div className="text-center mb-6 mt-20 joyride-header">
           <h1 className="text-2xl font-bold">What can I help you with?</h1>
         </div>
 
         {/* Tags Section */}
         <div className="flex flex-wrap justify-center gap-2 mb-6 joyride-tags">
-          <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">Search Queries</span>
-          <span className="border border-solid border-blue-500 text-white px-4 py-2 rounded-full text-sm">Search Answers</span>
-          <span className="border border-solid border-green-500 text-white px-4 py-2 rounded-full text-sm">Search Keywords</span>
+          <span className="border border-solid border-red-500 text-white px-4 py-2 rounded-full text-sm">
+            Search Queries
+          </span>
+          <span className="border border-solid border-blue-500 text-white px-4 py-2 rounded-full text-sm">
+            Search Answers
+          </span>
+          <span className="border border-solid border-green-500 text-white px-4 py-2 rounded-full text-sm">
+            Search Keywords
+          </span>
         </div>
 
         {/* Chat Input Area */}
         <form
-          className="relative rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 w-[850px] joyride-input"
+          className="w-[850px] rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 joyride-input"
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
@@ -140,7 +149,11 @@ export default function ChatPage() {
 
         {/* Results Section */}
         <div className="mt-6 w-full max-w-md joyride-results">
-          {loading && <p className="text-center text-sm">Loading...</p>}
+          {loading && (
+            <div className="flex justify-center items-center mt-4">
+              <Loader className="animate-spin text-gray-600 w-8 h-8" />
+            </div>
+          )}
           {error && <p className="text-center text-sm text-red-500">{error}</p>}
 
           {/* Search Results */}
@@ -186,3 +199,7 @@ export default function ChatPage() {
     </>
   );
 }
+
+
+
+
