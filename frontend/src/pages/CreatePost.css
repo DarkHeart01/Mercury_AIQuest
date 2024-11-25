@@ -18,3 +18,17 @@
     background-color: #3b82f6; 
     animation: moveBar 3s linear;
 }
+
+/* createpost opening page animation */
+
+.page-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  
+  .page-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  

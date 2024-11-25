@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AppSidebar } from "@/components/app-sidebar-feed";
-import './CreatePost.css'; 
-
+import './createpost.css'; // Import your CSS file
 
 const CreatePostPage = () => {
     const [content, setContent] = useState("");
@@ -12,7 +11,15 @@ const CreatePostPage = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [sending, setSending] = useState(false); // New state for sending
+    const [sending, setSending] = useState(false);
+    const [animationClass, setAnimationClass] = useState("page-enter");
+
+    useEffect(() => {
+        // Trigger the page opening animation
+        setTimeout(() => {
+            setAnimationClass("page-enter-active");
+        }, 100); // Delay to trigger the animation class after initial render
+    }, []);
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -23,7 +30,7 @@ const CreatePostPage = () => {
         }
 
         setLoading(true);
-        setSending(true); // Start sending state
+        setSending(true); // Start sending animation
         setErrorMessage(null);
         setSuccessMessage(null);
 
@@ -55,14 +62,14 @@ const CreatePostPage = () => {
             setErrorMessage("An error occurred. Please try again.");
         } finally {
             setLoading(false);
-            setSending(false); // Reset sending state
+            setSending(false); // Stop sending animation
         }
     };
 
     return (
         <>
             <AppSidebar />
-            <div className="max-w-xl mx-auto p-6 w-full shadow-md rounded-md">
+            <div className={`max-w-xl mx-auto p-6 w-full shadow-md rounded-md ${animationClass}`}>
                 <h1 className="text-2xl font-bold mb-4">Create a Post</h1>
 
                 {successMessage && (
@@ -100,19 +107,21 @@ const CreatePostPage = () => {
                         />
                     </div>
 
-                    <div className="relative">
-                        {sending && (
-                            <div className="absolute top-0 left-0 w-full h-1 bg-blue-500 animate-bar" />
-                        )}
-                        <Button type="submit" className="w-full" disabled={loading || sending}>
-                            {sending ? "Sending..." : loading ? "Creating..." : "Create Post"}
-                        </Button>
-                    </div>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? "Creating..." : "Create Post"}
+                    </Button>
                 </form>
+
+                {sending && (
+                    <div className="relative mt-4">
+                        <div className="animate-bar"></div>
+                    </div>
+                )}
             </div>
         </>
     );
 };
 
 export default CreatePostPage;
+
 
