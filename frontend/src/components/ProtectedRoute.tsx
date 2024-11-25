@@ -17,3 +17,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 };
 
 export default ProtectedRoute;
+On branch main
+Your branch and 'origin/main' have diverged,
+and have 2 and 6 different commits each, respectively.
+
+nothing to commit, working tree clean
