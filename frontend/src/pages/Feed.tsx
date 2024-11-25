@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AppSidebar } from "@/components/app-sidebar-feed";
+import './Feed.css';
 
-// Define types for the API responses
 interface Answer {
   content: string;
   createdAt: string;
@@ -35,9 +35,11 @@ const SearchFeed: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [userId] = useState(2); // Hardcoded userId for the purpose of the example
+  const [isPageVisible, setIsPageVisible] = useState(false); // For controlling page visibility on mount
 
   useEffect(() => {
-    // Fetch the entire feed initially
+    setIsPageVisible(true); // Trigger the animation on component mount
+
     const fetchFeed = async () => {
       setLoading(true);
       try {
@@ -54,11 +56,9 @@ const SearchFeed: React.FC = () => {
   }, []);
 
   const handleSearch = async () => {
-    setLoading(true); // Show the loading spinner
+    setLoading(true);
     try {
-      // Simulate a 1-second delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
-
       const response = await axios.get<APIResponse>(
         `http://65.1.43.251/api/feed/search?search=${encodeURIComponent(search)}`
       );
@@ -68,7 +68,7 @@ const SearchFeed: React.FC = () => {
     } catch (error) {
       console.error("Error searching queries:", error);
     } finally {
-      setLoading(false); // Hide the loading spinner
+      setLoading(false);
     }
   };
 
@@ -81,7 +81,6 @@ const SearchFeed: React.FC = () => {
           type,
         }
       );
-      // Update the query's upvote/downvote count after voting
       setQueries((prevQueries) =>
         prevQueries.map((query) =>
           query.id === queryId
@@ -106,7 +105,6 @@ const SearchFeed: React.FC = () => {
 
   const handleQueryClick = (queryId: number | undefined) => {
     if (queryId) {
-      // Handle the click event (e.g., navigate to a details page)
       console.log(`Query clicked: ${queryId}`);
     }
   };
@@ -114,7 +112,9 @@ const SearchFeed: React.FC = () => {
   return (
     <>
       <AppSidebar />
-      <div className="p-4 w-full">
+      <div
+        className={`p-4 w-full ${isPageVisible ? "fade-in" : ""}`} // Apply fade-in class when the page is visible
+      >
         <div className="mb-4 relative">
           <input
             type="text"
@@ -219,5 +219,10 @@ const SearchFeed: React.FC = () => {
 };
 
 export default SearchFeed;
+
+
+
+
+
 
 

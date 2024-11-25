@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AppSidebar } from "@/components/app-sidebar-feed";
+import './TrendingFeed.css';
 
 // Define types for the API responses
 interface Answer {
@@ -26,8 +27,12 @@ const TrendingFeed: React.FC = () => {
   const [trendingQueries, setTrendingQueries] = useState<Query[]>([]);
   const [loading, setLoading] = useState(false);
   const [userId] = useState(2); // Hardcoded userId for the purpose of the example
+  const [isPageVisible, setIsPageVisible] = useState(false); // Track page visibility for animation
 
   useEffect(() => {
+    // Set the page to be visible to trigger fade-in animation
+    setIsPageVisible(true);
+
     // Fetch the trending queries
     const fetchTrending = async () => {
       setLoading(true);
@@ -82,7 +87,7 @@ const TrendingFeed: React.FC = () => {
   return (
     <>
       <AppSidebar />
-      <div className="p-4 w-full">
+      <div className={`p-4 w-full ${isPageVisible ? "fade-in" : ""}`}> {/* Apply fade-in class here */}
         <h1 className="text-2xl font-bold mb-4">Trending Queries</h1>
         {loading && <p>Loading...</p>}
 
@@ -155,3 +160,4 @@ const TrendingFeed: React.FC = () => {
 };
 
 export default TrendingFeed;
+
