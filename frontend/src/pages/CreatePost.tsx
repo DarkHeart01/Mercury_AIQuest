@@ -38,7 +38,7 @@ const CreatePostPage = () => {
         const postData = {
             content,
             tags: tagArray,
-            creatorId: 6, // Hardcoded for now
+            creatorId: 15, // Hardcoded for now
         };
 
         try {
