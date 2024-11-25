@@ -19,6 +19,31 @@ import LoginSignUp from "./pages/signin";
 function App() {
   return (
     <SidebarProvider>
+      /*<AuthProvider>
+      <Router>
+        <Routes>
+
+          {/* Protected Routes */}
+          <Route
+            path="/Landing"
+            element={<ProtectedRoute><LandingPage/></ProtectedRoute>}/>
+            <Route path="/" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
+            <Route path="/docsense" element={<ProtectedRoute><DocSense /></ProtectedRoute>} />
+            <Route path="/gittalk" element={<ProtectedRoute><GitTalk /></ProtectedRoute>} />
+            <Route path="/Feed" element={<ProtectedRoute><Feed /></ProtectedRoute>} />
+
+            <Route path="/Feed/trending" element={<ProtectedRoute><TrendingFeed /></ProtectedRoute>} />
+            <Route path="/CreatPost" element={<ProtectedRoute><CreatePostPage /></ProtectedRoute>} />
+            <Route path="/Contribute" element={<ProtectedRoute><ContributePage /></ProtectedRoute>} />
+            <Route path='/Analytics' element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
+            <Route path="/Landing" element={<ProtectedRoute><LandingPage /></ProtectedRoute>} />
+            <Route path="/Settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+            <Route path="Settings/profilepage" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
+          {/* Default Home Route */}
+          <Route path="/" element={<Feed />} />
+        </Routes>
+      </Router>
+    </AuthProvider> */
     <Router>
         <Routes>
 
