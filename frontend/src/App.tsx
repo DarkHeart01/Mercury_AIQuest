@@ -45,7 +45,7 @@ function App() {
           <Route path="/" element={<Feed />} />
         </Routes>
       </Router>
-    </AuthProvider>*/
+    </AuthProvider> */
     <Router>
         <Routes>
           {/* Public Routes */}
