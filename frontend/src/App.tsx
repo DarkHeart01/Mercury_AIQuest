@@ -12,6 +12,7 @@ import CreatePostPage from "./pages/CreatePost";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import TrendingFeed from "./pages/TrendingFeed";
 import ContributePage from "./pages/ContributePage";
+import QueryPage from "./pages/QueryPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/Feed/trending" element={<TrendingFeed />} />
           <Route path="/CreatPost" element={<CreatePostPage />} />
           <Route path="/Contribute" element={<ContributePage />} />
+          <Route path="/Query/:queryId" element={<QueryPage />} />
           <Route path='/Analytics' element={<AnalyticsPage />} />
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
