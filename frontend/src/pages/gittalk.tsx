@@ -28,19 +28,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import "./gittalk.css";
 
 const GitTalk = () => {
   const [messages, setMessages] = React.useState([
-    {
-      id: 1,
-      text: "What are you?",
-      sender: "user",
-    },
-    {
-      id: 2,
-      text: "I'm GitTalk!",
-      sender: "bot",
-    },
+    { id: 1, text: "What are you?", sender: "user" },
+    { id: 2, text: "I'm GitTalk!", sender: "bot" },
   ]);
 
   const [inputValue, setInputValue] = React.useState("");
@@ -74,20 +67,13 @@ const GitTalk = () => {
     if (!inputValue.trim() || !selectedRepo) return;
 
     // Add the user message to the chat
-    const userMessage = {
-      id: messages.length + 1,
-      text: inputValue,
-      sender: "user",
-    };
-
+    const userMessage = { id: messages.length + 1, text: inputValue, sender: "user" };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInputValue("");
     setIsLoading(true);
 
     try {
-      const queryPayload = {
-        query: `With reference to ${selectedRepo.repoName} repo, ${inputValue}`,
-      };
+      const queryPayload = { query: `With reference to ${selectedRepo.repoName} repo, ${inputValue}` };
 
       // Send the message to the API
       const response = await axios.post(
@@ -122,13 +108,13 @@ const GitTalk = () => {
     <SidebarProvider>
       <AppSidebar />
       <div className="flex flex-row w-full items-center justify-center">
-        <div className="flex flex-col h-screen w-[65%] mx-auto bg-background shadow-lg rounded-lg">
+        <div className="flex flex-col h-screen w-[65%] mx-auto bg-background shadow-lg rounded-lg page-container">
           {/* Chat Message List */}
-          <ChatMessageList>
+          <ChatMessageList className="chat-message-list">
             {messages.map((message: any) => {
               const variant = message.sender === "user" ? "sent" : "received";
               return (
-                <ChatBubble key={message.id} variant={variant}>
+                <ChatBubble key={message.id} variant={variant} className="chat-bubble-enter">
                   <ChatBubbleAvatar fallback={variant === "sent" ? "US" : "AI"} />
                   <ChatBubbleMessage
                     isLoading={message.isLoading}
@@ -141,12 +127,7 @@ const GitTalk = () => {
                         code({ node, inline, className, children, ...props }) {
                           const match = /language-(\w+)/.exec(className || "");
                           return !inline && match ? (
-                            <SyntaxHighlighter
-                              style={oneDark}
-                              language={match[1]}
-                              PreTag="div"
-                              {...props}
-                            >
+                            <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div" {...props}>
                               {String(children).replace(/\n$/, "")}
                             </SyntaxHighlighter>
                           ) : (
@@ -166,10 +147,7 @@ const GitTalk = () => {
           </ChatMessageList>
 
           {/* Chat Input */}
-          <form
-            className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
-            onSubmit={handleSendMessage}
-          >
+          <form className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1 chat-input-container" onSubmit={handleSendMessage}>
             <ChatInput
               placeholder="Type your message here..."
               className="min-h-12 resize-none rounded-lg bg-background border-0 p-3 shadow-none focus-visible:ring-0"
@@ -186,9 +164,7 @@ const GitTalk = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {repoLoading ? (
-                    <DropdownMenuItem className="text-sm text-muted">
-                      Loading repositories...
-                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-sm text-muted">Loading repositories...</DropdownMenuItem>
                   ) : (
                     repos.map((repo) => (
                       <DropdownMenuItem
@@ -221,3 +197,4 @@ const GitTalk = () => {
 };
 
 export default GitTalk;
+

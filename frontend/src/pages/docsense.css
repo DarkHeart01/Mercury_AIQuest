@@ -1,0 +1,86 @@
+/* General page fade-in animation */
+.page-container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Animation for chat bubbles */
+  .chat-bubble-enter {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: chatBubbleEnter 0.5s ease-out forwards;
+  }
+  
+  @keyframes chatBubbleEnter {
+    0% {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Animation for chat input field */
+  .chat-input-container {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.8s ease-out 0.5s forwards;
+  }
+  
+ /* General page fade-in animation */
+.page-container {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+
+  .chat-bubble-enter {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: chatBubbleEnter 0.5s ease-out forwards;
+  }
+  
+  @keyframes chatBubbleEnter {
+    0% {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Animation for chat input field */
+  .chat-input-container {
+    opacity: 0;
+  }
+  
+  
+  

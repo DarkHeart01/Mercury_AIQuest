@@ -126,13 +126,13 @@ const DocSense = () => {
     <SidebarProvider>
       <AppSidebar />
       <div className="flex flex-row w-full items-center justify-center">
-        <div className="flex flex-col h-screen w-[65%] mx-auto bg-background shadow-lg rounded-lg">
+        <div className="flex flex-col h-screen w-[65%] mx-auto bg-background shadow-lg rounded-lg page-container">
           {/* Chat Message List */}
           <ChatMessageList>
             {messages.map((message: any) => {
               const variant = message.sender === "user" ? "sent" : "received";
               return (
-                <ChatBubble key={message.id} variant={variant}>
+                <ChatBubble key={message.id} variant={variant} className="chat-bubble-enter">
                   <ChatBubbleAvatar fallback={variant === "sent" ? "US" : "AI"} />
                   <ChatBubbleMessage
                     isLoading={message.isLoading}
@@ -146,7 +146,7 @@ const DocSense = () => {
                     </ReactMarkdown>
                   </ChatBubbleMessage>
                   {/* Action Icons */}
-                  <ChatBubbleActionWrapper>
+                  <ChatBubbleActionWrapper className="chat-action-icons">
                     {actionIcons.map(({ icon: Icon, type }) => (
                       <ChatBubbleAction
                         className="size-7"
@@ -172,7 +172,7 @@ const DocSense = () => {
 
           {/* Chat Input */}
           <form
-            className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1"
+            className="relative rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring p-1 chat-input-container"
             onSubmit={handleSendMessage}
           >
             <ChatInput
@@ -226,4 +226,5 @@ const DocSense = () => {
 };
 
 export default DocSense;
+
 

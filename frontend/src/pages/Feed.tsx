@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { AppSidebar } from "@/components/app-sidebar-feed";
-import './Feed.css';
+import "./Feed.css";
 
 interface Answer {
   content: string;
@@ -34,8 +35,10 @@ const SearchFeed: React.FC = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
-  const [userId] = useState(2); // Hardcoded userId for the purpose of the example
+  const [userId] = useState(3); // Hardcoded userId for the purpose of the example
   const [isPageVisible, setIsPageVisible] = useState(false); // For controlling page visibility on mount
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsPageVisible(true); // Trigger the animation on component mount
@@ -74,7 +77,7 @@ const SearchFeed: React.FC = () => {
 
   const handleVote = async (queryId: number, type: "UPVOTE" | "DOWNVOTE") => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://65.1.43.251/api/query/queries/${queryId}/vote`,
         {
           userId,
@@ -105,7 +108,7 @@ const SearchFeed: React.FC = () => {
 
   const handleQueryClick = (queryId: number | undefined) => {
     if (queryId) {
-      console.log(`Query clicked: ${queryId}`);
+      navigate(`/Query/${queryId}`);
     }
   };
 
@@ -147,7 +150,8 @@ const SearchFeed: React.FC = () => {
           {queries.map((query: Query) => (
             <div
               key={query.id || query.queryID}
-              className="relative border-2 border-gray-400 p-4 mb-4 rounded-lg shadow-md"
+              className="relative border-2 border-gray-400 p-4 mb-4 rounded-lg shadow-md cursor-pointer"
+              onClick={() => handleQueryClick(query.id || query.queryID)}
             >
               <h2 className="text-xl font-bold">{query.content}</h2>
               <div className="text-sm text-gray-500">
@@ -158,16 +162,20 @@ const SearchFeed: React.FC = () => {
               <div className="mt-4 flex items-center space-x-4">
                 <button
                   className="px-3 py-1 border border-green-500 text-green-500 rounded hover:bg-green-500 hover:text-white"
-                  onClick={() => handleVote(query.id || query.queryID!, "UPVOTE")}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering `onClick` for the parent div
+                    handleVote(query.id || query.queryID!, "UPVOTE");
+                  }}
                 >
                   Upvote
                 </button>
                 <span className="px-3 py-1 border border-gray-300 rounded">{query.upvotesCount} Upvotes</span>
                 <button
                   className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white"
-                  onClick={() =>
-                    handleVote(query.id || query.queryID!, "DOWNVOTE")
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering `onClick` for the parent div
+                    handleVote(query.id || query.queryID!, "DOWNVOTE");
+                  }}
                 >
                   Downvote
                 </button>
@@ -180,7 +188,6 @@ const SearchFeed: React.FC = () => {
                   query.answers.map((answer, index) => (
                     <div key={index} className="p-2 border-t">
                       <p>{answer.content}</p>
-
                       <div className="text-sm text-gray-500 flex flex-row">
                         {answer.createdAt &&
                           new Date(answer.createdAt).toLocaleString()}{" "}
@@ -219,10 +226,3 @@ const SearchFeed: React.FC = () => {
 };
 
 export default SearchFeed;
-
-
-
-
-
-
-
