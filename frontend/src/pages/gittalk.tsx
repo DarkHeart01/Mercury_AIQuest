@@ -18,6 +18,8 @@ import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
 import MessageLoading from "@/components/ui/chat/message-loading";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import axios from "axios";
 
 import {
@@ -134,7 +136,26 @@ const GitTalk = () => {
                   >
                     <ReactMarkdown
                       className="markdown-content"
-                      remarkPlugins={[remarkGfm]} // Optional: GitHub flavored Markdown
+                      remarkPlugins={[remarkGfm]}
+                      components={{
+                        code({ node, inline, className, children, ...props }) {
+                          const match = /language-(\w+)/.exec(className || "");
+                          return !inline && match ? (
+                            <SyntaxHighlighter
+                              style={oneDark}
+                              language={match[1]}
+                              PreTag="div"
+                              {...props}
+                            >
+                              {String(children).replace(/\n$/, "")}
+                            </SyntaxHighlighter>
+                          ) : (
+                            <code className={`inline-code ${className}`} {...props}>
+                              {children}
+                            </code>
+                          );
+                        },
+                      }}
                     >
                       {message.text}
                     </ReactMarkdown>

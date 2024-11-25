@@ -154,8 +154,8 @@ const ContributePage: React.FC = () => {
 
         {/* Loading Animation */}
         {uploadingRepo && (
-          <div className="fixed inset-0 bg-black opacity-75 flex flex-col justify-center items-center z-50">
-            <p className="text-white text-xl">{loadingText}</p>
+          <div className="ml-5 mt-5 fixed inset-0 bg-black opacity-75 flex flex-col justify-center items-center z-50">
+            <p className="text-white text-xl font-bold">{loadingText}</p>
             <Lottie
               animationData={stages[loadingStage].animation}
               loop={true}
