@@ -7,7 +7,7 @@ interface Answer {
   content: string;
   createdAt: string;
   creatorName?: string;
-  isOfficial: boolean; // Add the isOfficial field
+  isOfficial: boolean;
 }
 
 interface Query {
@@ -54,8 +54,11 @@ const SearchFeed: React.FC = () => {
   }, []);
 
   const handleSearch = async () => {
-    setLoading(true);
+    setLoading(true); // Show the loading spinner
     try {
+      // Simulate a 1-second delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       const response = await axios.get<APIResponse>(
         `http://65.1.43.251/api/feed/search?search=${encodeURIComponent(search)}`
       );
@@ -65,7 +68,7 @@ const SearchFeed: React.FC = () => {
     } catch (error) {
       console.error("Error searching queries:", error);
     } finally {
-      setLoading(false);
+      setLoading(false); // Hide the loading spinner
     }
   };
 
@@ -75,7 +78,7 @@ const SearchFeed: React.FC = () => {
         `http://65.1.43.251/api/query/queries/${queryId}/vote`,
         {
           userId,
-          type
+          type,
         }
       );
       // Update the query's upvote/downvote count after voting
@@ -83,16 +86,16 @@ const SearchFeed: React.FC = () => {
         prevQueries.map((query) =>
           query.id === queryId
             ? {
-              ...query,
-              upvotesCount:
-                type === "UPVOTE"
-                  ? (query.upvotesCount || 0) + 1
-                  : query.upvotesCount,
-              downvotesCount:
-                type === "DOWNVOTE"
-                  ? (query.downvotesCount || 0) + 1
-                  : query.downvotesCount,
-            }
+                ...query,
+                upvotesCount:
+                  type === "UPVOTE"
+                    ? (query.upvotesCount || 0) + 1
+                    : query.upvotesCount,
+                downvotesCount:
+                  type === "DOWNVOTE"
+                    ? (query.downvotesCount || 0) + 1
+                    : query.downvotesCount,
+              }
             : query
         )
       );
@@ -101,11 +104,18 @@ const SearchFeed: React.FC = () => {
     }
   };
 
+  const handleQueryClick = (queryId: number | undefined) => {
+    if (queryId) {
+      // Handle the click event (e.g., navigate to a details page)
+      console.log(`Query clicked: ${queryId}`);
+    }
+  };
+
   return (
     <>
       <AppSidebar />
       <div className="p-4 w-full">
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <input
             type="text"
             value={search}
@@ -119,9 +129,13 @@ const SearchFeed: React.FC = () => {
           >
             Search
           </button>
+          {loading && (
+            <div className="mt-2 flex items-center">
+              <div className="loader w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="ml-2 text-gray-600">Searching...</span>
+            </div>
+          )}
         </div>
-
-        {loading && <p>Loading...</p>}
 
         {aiSuggestion && (
           <div className="p-4 mb-4 bg-gray-100 rounded">
@@ -130,8 +144,11 @@ const SearchFeed: React.FC = () => {
         )}
 
         <div>
-          {queries.map((query: any) => (
-            <div key={query.id || query.queryID} className="border p-4 mb-4 rounded shadow">
+          {queries.map((query: Query) => (
+            <div
+              key={query.id || query.queryID}
+              className="relative border-2 border-gray-400 p-4 mb-4 rounded-lg shadow-md"
+            >
               <h2 className="text-xl font-bold">{query.content}</h2>
               <div className="text-sm text-gray-500">
                 {query.createdAt && new Date(query.createdAt).toLocaleString()}
@@ -140,34 +157,34 @@ const SearchFeed: React.FC = () => {
               {/* Voting Buttons */}
               <div className="mt-4 flex items-center space-x-4">
                 <button
-                  className="text-green-500 hover:text-green-700"
-                  onClick={() => handleVote(query.id || query.queryID, "UPVOTE")}
+                  className="px-3 py-1 border border-green-500 text-green-500 rounded hover:bg-green-500 hover:text-white"
+                  onClick={() => handleVote(query.id || query.queryID!, "UPVOTE")}
                 >
                   Upvote
                 </button>
-                <span>
-                  {query.upvotesCount} Upvotes
-                </span>
+                <span className="px-3 py-1 border border-gray-300 rounded">{query.upvotesCount} Upvotes</span>
                 <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => handleVote(query.id || query.queryID, "DOWNVOTE")}
+                  className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white"
+                  onClick={() =>
+                    handleVote(query.id || query.queryID!, "DOWNVOTE")
+                  }
                 >
                   Downvote
                 </button>
-                <span>
-                  {query.downvotesCount} Downvotes
-                </span>
+                <span>{query.downvotesCount} Downvotes</span>
               </div>
 
               <div className="mt-2">
                 <h3 className="font-semibold">Answers:</h3>
                 {query.answers.length > 0 ? (
-                  query.answers.map((answer: any, index: number) => (
+                  query.answers.map((answer, index) => (
                     <div key={index} className="p-2 border-t">
                       <p>{answer.content}</p>
 
                       <div className="text-sm text-gray-500 flex flex-row">
-                        {answer.createdAt && new Date(answer.createdAt).toLocaleString()} by {answer.creatorName || "Anonymous"}
+                        {answer.createdAt &&
+                          new Date(answer.createdAt).toLocaleString()}{" "}
+                        by {answer.creatorName || "Anonymous"}
                         {answer.isOfficial && (
                           <span className="text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full ml-2">
                             Official
@@ -183,7 +200,7 @@ const SearchFeed: React.FC = () => {
 
               {query.tags && (
                 <div className="mt-2 flex gap-2">
-                  {query.tags.map((tag: any) => (
+                  {query.tags.map((tag) => (
                     <span
                       key={tag.id}
                       className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
@@ -202,3 +219,5 @@ const SearchFeed: React.FC = () => {
 };
 
 export default SearchFeed;
+
+
