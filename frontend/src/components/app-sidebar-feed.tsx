@@ -183,7 +183,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Link>
       </SidebarMenu>
       <SidebarMenu>
-        <Link to="/Analytics">
+        <Link to="/Contribute">
+          <SidebarMenuButton  className="joyride-contribute">
+            Contribute
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
+      <SidebarMenu>
+        <Link to="/Analytics" className="joyride-analytics">
           <SidebarMenuButton>
             Analytics
           </SidebarMenuButton>
@@ -193,7 +200,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain
           items={data.navMain.map((item) => {
             if (item.title === "Feed") {
-              return { ...item, dataTourId: "joyride-feed" }; // Add id and class
+              return { ...item, classname: "joyride-feed" }; // Add id and class
             }
             return item;
           })}

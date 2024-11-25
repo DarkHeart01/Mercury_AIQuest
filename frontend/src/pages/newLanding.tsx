@@ -35,7 +35,15 @@ export default function ChatPage() {
       content: "This is DocSense: Here you can chat directly with your company's documents!",
     },
     {
-      target: '[data-tour-id="joyride-feed"]',
+      target: ".joyride-contribute",
+      content: "This is DocSense: Here you can chat directly with your company's documents!",
+    },
+    {
+      target: ".joyride-analytics",
+      content: "This is DocSense: Here you can chat directly with your company's documents!",
+    },
+    {
+      target: ".joyride-feed",
       content: "This is DocSense: Here you can chat directly with your company's documents!",
     },
   ];
