@@ -56,15 +56,15 @@ const data = {
       items: [
         {
           title: "Feed",
-          url: "/feed",
+          url: "/Feed",
         },
         {
           title: "Create Post",
-          url: "/CreatPost",
+          url: "/CreatePost",
         },
         {
           title: "Trending Posts",
-          url: "/feed/trending",
+          url: "/Feed/Trending",
         },
       ],
     },

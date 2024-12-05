@@ -23,8 +23,8 @@ function App() {
           <Route path="/docsense" element={<DocSense />} />
           <Route path="/gittalk" element={<GitTalk />} />
           <Route path="/Feed" element={<Feed />} />
-          <Route path="/Feed/trending" element={<TrendingFeed />} />
-          <Route path="/CreatPost" element={<CreatePostPage />} />
+          <Route path="/Feed/Trending" element={<TrendingFeed />} />
+          <Route path="/CreatePost" element={<CreatePostPage />} />
           <Route path="/Query/:queryId" element={<QueryPage />} />
           <Route path="/Contribute" element={<ContributePage />} />
           <Route path='/Analytics' element={<AnalyticsPage />} />
