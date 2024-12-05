@@ -6,7 +6,6 @@ import {
   FlagIcon,
   HandThumbUpIcon,
   ShareIcon,
-  StarIcon, 
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import {
@@ -19,8 +18,6 @@ import {
 import { Button } from "@/components/ui/button"; // shadcn Button
 import "./Post.css";
 import { useState } from "react";
-import { ArrowRightCircle } from "lucide-react";
-import { useParams } from 'react-router-dom';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isSubmitted, setIsSubmitted] = useState(false); // State to handle submission status

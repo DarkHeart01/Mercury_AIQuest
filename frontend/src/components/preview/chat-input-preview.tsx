@@ -1,5 +1,3 @@
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 
 export const ChatInputPreviewCode = `import { ChatInput } from "@/components/ui/chat/chat-input"

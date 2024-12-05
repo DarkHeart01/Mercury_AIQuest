@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -38,11 +38,11 @@ const CreatePostPage = () => {
         const postData = {
             content,
             tags: tagArray,
-            creatorId: 15, // Hardcoded for now
+            creatorId: 14, // Hardcoded for now
         };
 
         try {
-            const response = await fetch("http://65.1.43.251/api/query/queries", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/query/queries`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

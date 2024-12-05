@@ -1,27 +1,6 @@
 import * as React from "react"
 import { ChevronRight } from "lucide-react"
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-  User,
-  Atom,
-  ShieldQuestion,
-  UsersRound,
-  MessageSquareWarning,
-  StickyNote,
-  Award,
-  Settings,
-} from "lucide-react"
 import { SearchForm } from "@/components/ui/search-form"
-import { VersionSwitcher } from "@/components/ui/version-switcher"
 import {
   Collapsible,
   CollapsibleContent,
@@ -37,7 +16,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar"
 
 // This is sample data.

@@ -38,7 +38,7 @@ const TrendingFeed: React.FC = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "http://65.1.43.251/api/feed/trending"
+          `${import.meta.env.VITE_API_URL}/feed/trending`
         );
         console.log(response.data.posts);
         setTrendingQueries(response.data.posts || []);
@@ -54,8 +54,8 @@ const TrendingFeed: React.FC = () => {
 
   const handleVote = async (queryId: number, type: "UPVOTE" | "DOWNVOTE") => {
     try {
-      const response = await axios.post(
-        `http://65.1.43.251/api/query/queries/${queryId}/vote`,
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/query/queries/${queryId}/vote`,
         {
           userId,
           type,

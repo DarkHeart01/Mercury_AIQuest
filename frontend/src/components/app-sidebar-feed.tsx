@@ -1,16 +1,5 @@
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-  User,
   Atom,
   ShieldQuestion,
   UsersRound,
@@ -31,11 +20,9 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { Link } from "react-router-dom";
-import Joyride, { Step } from "react-joyride";
 
 // This is sample data.
 const data = {
@@ -99,7 +86,6 @@ const data = {
     {
       title: "Resources",
       url: "#",
-      icon: BookOpen,
       items: [
         {
           title: "Introduction",

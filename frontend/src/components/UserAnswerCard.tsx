@@ -5,9 +5,6 @@ import { useState } from "react"; // For handling user input
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
   } from "@/components/ui/card";
 
 interface UserAnswerCardProps {

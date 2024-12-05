@@ -1,5 +1,4 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Page as SettingsPage } from "@/pages/Settings";
 import ProfileSettingsPage from "@/pages/ProfilePage";
 import Feed from "@/pages/Feed";
@@ -12,8 +11,6 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import TrendingFeed from "./pages/TrendingFeed";
 import ContributePage from "./pages/ContributePage";
 import QueryPage from "./pages/QueryPage";
-import { AuthProvider } from "@/components/AuthContext";
-import LoginSignUp from "./pages/signin";
 
 function App() {
   return (

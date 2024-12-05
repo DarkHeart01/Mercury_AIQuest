@@ -2,24 +2,18 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
-import { Forward, Heart } from "lucide-react";
 import { CornerDownLeft, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   ChatBubble,
   ChatBubbleAvatar,
   ChatBubbleMessage,
-  ChatBubbleAction,
-  ChatBubbleActionWrapper,
 } from "@/components/ui/chat/chat-bubble";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { ChatMessageList } from "@/components/ui/chat/chat-message-list";
-import MessageLoading from "@/components/ui/chat/message-loading";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import SyntaxHighlighter from "react-syntax-highlighter";
 import axios from "axios";
 
 import {
@@ -40,13 +34,13 @@ const GitTalk = () => {
   const [repos, setRepos] = useState<any[]>([]);
   const [selectedRepo, setSelectedRepo] = useState<any | null>(null);
   const [repoLoading, setRepoLoading] = useState(true);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [, setIsLoading] = React.useState(false);
 
   // Fetch the list of GitHub repositories from the API on component mount
   useEffect(() => {
     const fetchRepos = async () => {
       try {
-        const response = await fetch("http://65.1.43.251/api/upload/github");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/github`);
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -77,7 +71,7 @@ const GitTalk = () => {
 
       // Send the message to the API
       const response = await axios.post(
-        `http://65.1.43.251/api/talk/repo/${selectedRepo.id}`,
+        `${import.meta.env.VITE_API_URL}/talk/repo/${selectedRepo.id}`,
         queryPayload
       );
 
@@ -124,10 +118,10 @@ const GitTalk = () => {
                       className="markdown-content"
                       remarkPlugins={[remarkGfm]}
                       components={{
-                        code({ node, inline, className, children, ...props }) {
+                        code({ node, className, children, ...props }) {
                           const match = /language-(\w+)/.exec(className || "");
-                          return !inline && match ? (
-                            <SyntaxHighlighter style={oneDark} language={match[1]} PreTag="div" {...props}>
+                          return match ? (
+                            <SyntaxHighlighter language={match[1]} PreTag="div">
                               {String(children).replace(/\n$/, "")}
                             </SyntaxHighlighter>
                           ) : (

@@ -49,7 +49,7 @@ const QueryPage: React.FC = () => {
             setLoading(true);
             try {
                 const response = await axios.get<Query>(
-                    `http://65.1.43.251/api/query/query/${queryId}`
+                    `${import.meta.env.VITE_API_URL}/query/query/${queryId}`
                 );
                 setQuery(response.data);
             } catch (error) {
@@ -69,9 +69,9 @@ const QueryPage: React.FC = () => {
 
         setSubmitting(true);
         try {
-            const response = await axios.post(`http://65.1.43.251/api/query/queries/${queryId}/answer`, {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/query/queries/${queryId}/answer`, {
                 content: answerContent,
-                answerCreatorId: 4, // Replace with dynamic user ID if needed
+                answerCreatorId: 14, // Replace with dynamic user ID if needed
             });
 
             console.log(response.data);
@@ -93,8 +93,8 @@ const QueryPage: React.FC = () => {
 
     const handleMarkOfficial = async (answerId: number) => {
         try {
-            const userId = 7; // Replace with dynamic userId if needed
-            await axios.post(`http://65.1.43.251/api/query/answers/${answerId}/markOfficial`, {
+            const userId = 15; // Replace with dynamic userId if needed
+            await axios.post(`${import.meta.env.VITE_API_URL}/query/answers/${answerId}/markOfficial`, {
                 userId,
             });
 
@@ -118,8 +118,8 @@ const QueryPage: React.FC = () => {
         type: "UPVOTE" | "DOWNVOTE"
     ) => {
         try {
-            const userId = 5; // Replace with dynamic userId if needed
-            await axios.post(`http://65.1.43.251/api/query/answers/${answerId}/vote`, {
+            const userId = 15; // Replace with dynamic userId if needed
+            await axios.post(`${import.meta.env.VITE_API_URL}/query/answers/${answerId}/vote`, {
                 userId,
                 type,
                 queryId,

@@ -58,7 +58,7 @@ const ContributePage: React.FC = () => {
     formData.append("file", file);
 
     try {
-      const response = await axios.post("http://65.1.43.251/api/upload/file", formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/upload/file`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setFileSuccess("File uploaded successfully!");
@@ -85,7 +85,7 @@ const ContributePage: React.FC = () => {
     }, 10000);
 
     try {
-      await axios.post("http://65.1.43.251/api/upload/github", { repoUrl });
+      await axios.post(`${import.meta.env.VITE_API_URL}/upload/github`, { repoUrl });
 
       console.log('success');
       clearInterval(timer);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button"; // Assuming you're using the Button component from your project
 import { AppSidebar } from "@/components/app-sidebar-feed";
@@ -12,7 +12,7 @@ const AnalyticsPage = () => {
     useEffect(() => {
         const fetchAnalyticsData = async () => {
             try {
-                const response = await fetch("http://65.1.43.251/api/analytics/");
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/analytics/`);
                 const data = await response.json();
                 setAnalyticsData(data);
                 console.log(data);
@@ -78,7 +78,7 @@ const AnalyticsPage = () => {
                     {rows.length > 0 ? (
                         rows.map((row, index) => (
                             <div key={index} className="flex flex-row justify-center space-x-4 mb-6">
-                                {row.map((tagData: any, index: number) => renderChart(tagData))}
+                                {row.map((tagData: any) => renderChart(tagData))}
                             </div>
                         ))
                     ) : (

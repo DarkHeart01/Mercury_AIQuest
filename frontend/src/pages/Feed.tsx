@@ -35,7 +35,7 @@ const SearchFeed: React.FC = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
-  const [userId] = useState(3); // Hardcoded userId for the purpose of the example
+  const [userId] = useState(15); // Hardcoded userId for the purpose of the example
   const [isPageVisible, setIsPageVisible] = useState(false); // For controlling page visibility on mount
 
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ const SearchFeed: React.FC = () => {
     const fetchFeed = async () => {
       setLoading(true);
       try {
-        const response = await axios.get<Query[]>("http://65.1.43.251/api/feed/");
+        const response = await axios.get<Query[]>(`${import.meta.env.VITE_API_URL}/feed/`);
         setQueries(response.data);
       } catch (error) {
         console.error("Error fetching feed:", error);
@@ -63,7 +63,7 @@ const SearchFeed: React.FC = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const response = await axios.get<APIResponse>(
-        `http://65.1.43.251/api/feed/search?search=${encodeURIComponent(search)}`
+        `${import.meta.env.VITE_API_URL}/feed/search?search=${encodeURIComponent(search)}`
       );
       const { results, aiSuggestion } = response.data;
       setQueries(results?.queries || []);
@@ -77,8 +77,9 @@ const SearchFeed: React.FC = () => {
 
   const handleVote = async (queryId: number, type: "UPVOTE" | "DOWNVOTE") => {
     try {
+      console.log(queryId);
       await axios.post(
-        `http://65.1.43.251/api/query/queries/${queryId}/vote`,
+        `${import.meta.env.VITE_API_URL}/query/queries/${queryId}/vote`,
         {
           userId,
           type,

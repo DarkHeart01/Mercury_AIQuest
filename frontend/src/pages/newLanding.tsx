@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactJoyride, { Step } from "react-joyride";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import { Button } from "@/components/ui/button";
 import { ChatInput } from "@/components/ui/chat/chat-input";
@@ -22,7 +21,7 @@ export default function ChatPage() {
   const [aiReady, setAiReady] = useState(false);
 
   // Joyride state
-  const [isTourActive, setIsTourActive] = useState(true);
+  const [isTourActive, ] = useState(true);
 
   const joyrideSteps: Step[] = [
     {
@@ -69,7 +68,7 @@ export default function ChatPage() {
     setTimeout(async () => {
       try {
         const response = await fetch(
-          `http://65.1.43.251/api/query/search?search=${encodeURIComponent(query)}`
+          `${import.meta.env.VITE_API_URL}/query/search?search=${encodeURIComponent(query)}`
         );
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
@@ -135,7 +134,7 @@ export default function ChatPage() {
 
         {/* Chat Input Area */}
         <form
-          className={`w-[850px] rounded-lg border bg-card-foreground focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s ${isSearchBarAtBottom ? 'fixed bottom-4' : ''}`}
+          className={`w-[850px] rounded-lg border bg-[card-foreground] bg-[#2f2f2f] focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s ${isSearchBarAtBottom ? 'fixed bottom-4' : ''}`}
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
@@ -221,9 +220,3 @@ export default function ChatPage() {
     </>
   );
 }
-
-
-
-
-
-

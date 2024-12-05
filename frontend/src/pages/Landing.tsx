@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import { ChatInput } from "@/components/ui/chat/chat-input"
 import {
@@ -7,22 +7,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"; // Assuming SHADCN Dropdown is installed
-import { Input } from "@/components/ui/input"; // Assuming SHADCN Input component is installed
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"; // Card component from SHADCN
 import { FaSpinner } from "react-icons/fa"; // Importing the loading spinner from react-icons
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/outline"; // Importing the search icon
 import { useState } from "react";
 import "./Landing.css";
 import Logo from "@/images/MERCAI.png";
-import { Link } from "react-router-dom";
 
-export default function Landing({ children }: { children: React.ReactNode }) {
+interface changeType {
+  target: {
+    value: string;
+  };
+}
+
+export default function Landing() {
   const [searchQuery, setSearchQuery] = useState(""); // To hold the search query
   const [isLoading, setIsLoading] = useState(false); // To handle loading state
   const [results, setResults] = useState<string[]>([]); // To hold search results
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: changeType) => {
     setSearchQuery(e.target.value);
+    return;
   };
 
   const handleSearchSubmit = async (e: React.FormEvent) => {
@@ -53,7 +58,6 @@ export default function Landing({ children }: { children: React.ReactNode }) {
             <div className="relative w-[80%]">
               <form onSubmit={handleSearchSubmit}>
                 <ChatInput
-                  type="text"
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={handleSearchChange}

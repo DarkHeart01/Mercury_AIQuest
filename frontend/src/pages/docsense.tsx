@@ -45,14 +45,14 @@ const DocSense = () => {
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
   const [fileLoading, setFileLoading] = useState(true); // Loading indicator for files
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false); // Message loading state
 
   // Fetch the list of files from the API on component mount
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await fetch("http://65.1.43.251/api/upload/files");
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/files`);
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
@@ -90,7 +90,7 @@ const DocSense = () => {
 
         // Send the message to the API
         const response = await axios.post(
-          `http://65.1.43.251/api/talk/docs?query=${encodeURIComponent(queryWithPrefix)}`
+          `${import.meta.env.VITE_API_URL}/talk/docs?query=${encodeURIComponent(queryWithPrefix)}`
         );
 
         const data = response.data;
@@ -166,7 +166,7 @@ const DocSense = () => {
 
             {/* Loading Indicator */}
             {isLoading && (
-              <MessageLoading className="flex justify-center items-center p-4" />
+              <MessageLoading />
             )}
           </ChatMessageList>
 

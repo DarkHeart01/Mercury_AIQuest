@@ -1,7 +1,6 @@
 "use client"
 
-import { ChevronRight, type LucideIcon } from "lucide-react"
-
+import { ChevronRight } from "lucide-react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -18,21 +17,19 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string
-    url: string
-    icon?: LucideIcon
-    isActive?: boolean
-    className?: string // Added className for customization
-    items?: {
-      title: string
-      url: string
-    }[]
-  }[]
-}) {
+import { ForwardRefExoticComponent } from 'react';
+import { LucideProps } from 'lucide-react';
+
+interface NavItem {
+  title: string;
+  url?: string; // Make url optional
+  icon?: ForwardRefExoticComponent<LucideProps>; // Allow icon to be a React component
+  isActive?: boolean;
+  className?: string;
+  items?: NavItem[]; // Sub-items
+}
+
+export function NavMain({ items }: { items: NavItem[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Features</SidebarGroupLabel>
@@ -52,19 +49,21 @@ export function NavMain({
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
-              <CollapsibleContent>
-                <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
-                      <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
-                          <span>{subItem.title}</span>
-                        </a>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                  ))}
-                </SidebarMenuSub>
-              </CollapsibleContent>
+              {item.items && (
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    {item.items.map((subItem) => (
+                      <SidebarMenuSubItem key={subItem.title}>
+                        <SidebarMenuSubButton asChild>
+                          <a href={subItem.url}>
+                            <span>{subItem.title}</span>
+                          </a>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    ))}
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              )}
             </SidebarMenuItem>
           </Collapsible>
         ))}
