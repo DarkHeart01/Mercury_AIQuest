@@ -44,6 +44,7 @@ const DocSense = () => {
   const [inputValue, setInputValue] = React.useState("");
   const [files, setFiles] = useState<any[]>([]);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [selectedFileID, setSelectedFileID] = useState<number | null>(null);
   const [fileLoading, setFileLoading] = useState(true); // Loading indicator for files
   const [, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState(false); // Message loading state
@@ -90,7 +91,10 @@ const DocSense = () => {
 
         // Send the message to the API
         const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/talk/docs?query=${encodeURIComponent(queryWithPrefix)}`
+          `${import.meta.env.VITE_API_URL}/talk/docs?query=${encodeURIComponent(queryWithPrefix)} ${selectedFile}`,
+          {
+            fileID: selectedFileID,
+          }
         );
 
         const data = response.data;
@@ -198,7 +202,10 @@ const DocSense = () => {
                     files.map((file) => (
                       <DropdownMenuItem
                         key={file.id}
-                        onClick={() => setSelectedFile(file.fileName)}
+                        onClick={() => {
+                          setSelectedFile(file.fileName);
+                          setSelectedFileID(file.id);
+                        }}
                         className="cursor-pointer bg-[#252525]"
                       >
                         {file.fileName}
