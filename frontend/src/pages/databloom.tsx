@@ -27,18 +27,25 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 const DataBloom = () => {
     const [messages, setMessages] = React.useState([
         {
             id: 1,
             data: "What are you?",
             columns: [],
+            labels: [],
             sender: "user",
         },
         {
             id: 2,
             data: "I'm DataBloom!",
             columns: [],
+            labels: [],
             sender: "bot",
         },
     ]);
@@ -70,6 +77,67 @@ const DataBloom = () => {
         fetchCSVs();
     }, []);
 
+
+    const handleVisualize = async (event: React.FormEvent) => {
+        event.preventDefault();
+
+        if (!inputValue.trim()) return;
+
+        // Add the user message to the chat
+        const userMessage = {
+            id: messages.length + 1,
+            data: inputValue,
+            columns: [],
+            labels: [],
+            sender: "user",
+        };
+
+        setMessages((prevMessages) => [...prevMessages, userMessage]);
+        setInputValue("");
+        setIsLoading(true); // Start loading
+
+        // Simulate a 3-second delay for loading
+        setTimeout(async () => {
+            try {
+                console.log(inputValue);
+
+                // Send the request to visualize data
+                const response = await axios.post(
+                    `${import.meta.env.VITE_API_URL}/talk/csv/visualize?query=${encodeURIComponent(inputValue)}`,
+                    {
+                        csvID: selectedCSVID,
+                    }
+                );
+
+                const { data, labels } = response.data.externalResponse;
+
+                // Add the AI response to the chat with visualization data
+                const botMessage = {
+                    id: messages.length + 2,
+                    data: data,
+                    columns: [],
+                    labels: labels,
+                    sender: "bot",
+                };
+
+                setMessages((prevMessages) => [...prevMessages, botMessage]);
+
+            } catch (error) {
+                const errorMessage = {
+                    id: messages.length + 2,
+                    data: "There was an error fetching the visualization data. Please try again later.",
+                    columns: [],
+                    labels: [],
+                    sender: "bot",
+                };
+                setMessages((prevMessages) => [...prevMessages, errorMessage]);
+            } finally {
+                setIsLoading(false); // Stop loading after the delay
+            }
+        }, 3000); // 3-second delay
+    };
+
+
     const handleSendMessage = async (event: React.FormEvent) => {
         event.preventDefault();
 
@@ -80,6 +148,7 @@ const DataBloom = () => {
             id: messages.length + 1,
             data: inputValue,
             columns: [],
+            labels: [],
             sender: "user",
         };
 
@@ -102,13 +171,13 @@ const DataBloom = () => {
                 );
 
                 const data = response.data.externalResponse;
-                console.log(data);
 
                 // Add the AI response to the chat
                 const botMessage = {
                     id: messages.length + 2,
                     data: data.data || {},
                     columns: data.columns || [],
+                    labels: data.labels || [],
                     sender: "bot",
                 };
 
@@ -118,6 +187,7 @@ const DataBloom = () => {
                     id: messages.length + 2,
                     data: "There was an error connecting to the server. Please try again later.",
                     columns: [],
+                    labels: [],
                     sender: "bot",
                 };
                 setMessages((prevMessages) => [...prevMessages, errorMessage]);
@@ -183,8 +253,57 @@ const DataBloom = () => {
                                     </div>
                                 );
                             }
+
+                            else if (message.labels.length > 0) {
+                                return (
+                                    <ChatBubble key={message.id} variant="received" className="chat-bubble-enter">
+                                        <ChatBubbleAvatar fallback="AI" />
+                                        <div className="bg-gray-100 rounded-lg p-3 shadow-md">
+                                            <Bar
+                                                data={{
+                                                    labels: message.labels, // Labels from your message
+                                                    datasets: [
+                                                        {
+                                                            label: 'Data', // Label for the dataset
+                                                            data: message.data, // Data values from your message
+                                                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Set this dynamically or customize it
+                                                            borderColor: 'rgba(75, 192, 192, 1)', // Customize border color
+                                                            borderWidth: 1, // Customize border width
+                                                        },
+                                                    ],
+                                                }}
+                                                options={{
+                                                    responsive: true,
+                                                    plugins: {
+                                                        legend: {
+                                                            position: 'top', // Customize legend position
+                                                        },
+                                                        tooltip: {
+                                                            enabled: true, // Enable tooltips
+                                                        },
+                                                    },
+                                                    scales: {
+                                                        x: {
+                                                            title: {
+                                                                display: true,
+                                                                text: 'Time Periods', // X-axis title
+                                                            },
+                                                        },
+                                                        y: {
+                                                            title: {
+                                                                display: true,
+                                                                text: 'Values', // Y-axis title
+                                                            },
+                                                            beginAtZero: true, // Ensure Y-axis starts at 0
+                                                        },
+                                                    },
+                                                }}
+                                            />
+                                        </div>
+                                    </ChatBubble>
+                                );
+                            }
                             else {
-                                console.log(message);
                                 return (
                                     <ChatBubble key={message.id} variant={variant} className="chat-bubble-enter">
                                         <ChatBubbleAvatar fallback={variant === "sent" ? "US" : "AI"} />
@@ -269,6 +388,14 @@ const DataBloom = () => {
                             <Button variant="ghost" size="icon">
                                 <Mic className="size-4" />
                                 <span className="sr-only">Use Microphone</span>
+                            </Button>
+                            <Button
+                                onClick={handleVisualize}
+                                variant="outline"
+                                size="sm"
+                                className="ml-auto gap-1.5"
+                            >
+                                Visualize
                             </Button>
 
                             <Button size="sm" className="ml-auto gap-1.5" type="submit">
