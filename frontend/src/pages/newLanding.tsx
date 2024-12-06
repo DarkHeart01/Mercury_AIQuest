@@ -41,6 +41,14 @@ export default function ChatPage() {
       content: "This is DocSense: Here you can chat directly with your company's documents!",
     },
     {
+      target: ".joyride-batabloom",
+      content: "This is DataBloom: Analyze and visualize your CSV data!",
+    },
+    {
+      target: ".joyride-wiki",
+      content: "This is ShareBase: Internal Compnay Wiki!",
+    },
+    {
       target: ".joyride-contribute",
       content: "You can contirbute to the companys database of documents and GitHub Repos!",
     },

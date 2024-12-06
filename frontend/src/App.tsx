@@ -11,6 +11,7 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import TrendingFeed from "./pages/TrendingFeed";
 import ContributePage from "./pages/ContributePage";
 import QueryPage from "./pages/QueryPage";
+import DataBloom from "./pages/databloom";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/docsense" element={<DocSense />} />
           <Route path="/gittalk" element={<GitTalk />} />
+          <Route path="/databloom" element={<DataBloom />} />
           <Route path="/Feed" element={<Feed />} />
           <Route path="/Feed/Trending" element={<TrendingFeed />} />
           <Route path="/CreatePost" element={<CreatePostPage />} />

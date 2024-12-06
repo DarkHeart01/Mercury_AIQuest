@@ -169,6 +169,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Link>
       </SidebarMenu>
       <SidebarMenu>
+        <Link to="/DataBloom">
+          <SidebarMenuButton className="joyride-batabloom">
+            DataBloom
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
+      <SidebarMenu>
+        <Link to="/wiki">
+          <SidebarMenuButton className="joyride-wiki">
+            ShareBase
+          </SidebarMenuButton>
+        </Link>
+      </SidebarMenu>
+      <SidebarMenu>
         <Link to="/Contribute">
           <SidebarMenuButton className="joyride-contribute">
             Contribute
