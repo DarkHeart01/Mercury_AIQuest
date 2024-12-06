@@ -11,12 +11,18 @@ import ScrapingAnimation from "../assets/Scraping.json";
 
 const ContributePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [csvFile, setCsvFile] = useState<File | null>(null);
   const [repoUrl, setRepoUrl] = useState<string>("");
 
   // States for file upload
   const [uploadingFile, setUploadingFile] = useState<boolean>(false);
   const [fileError, setFileError] = useState<string | null>(null);
   const [fileSuccess, setFileSuccess] = useState<string | null>(null);
+
+  // States for CSV upload
+  const [uploadingCsv, setUploadingCsv] = useState<boolean>(false);
+  const [csvError, setCsvError] = useState<string | null>(null);
+  const [csvSuccess, setCsvSuccess] = useState<string | null>(null);
 
   // States for repository upload
   const [uploadingRepo, setUploadingRepo] = useState<boolean>(false);
@@ -39,6 +45,15 @@ const ContributePage: React.FC = () => {
     const file = event.target.files ? event.target.files[0] : null;
     if (file) {
       setFile(file);
+    }
+  };
+
+  const handleCsvChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    if (file && file.type === "text/csv") {
+      setCsvFile(file);
+    } else {
+      setCsvError("Please upload a valid CSV file.");
     }
   };
 
@@ -66,6 +81,29 @@ const ContributePage: React.FC = () => {
       setFileError("Error uploading file.");
     } finally {
       setUploadingFile(false);
+    }
+  };
+
+  const handleCsvUpload = async () => {
+    if (!csvFile) {
+      setCsvError("Please choose a CSV file to upload.");
+      return;
+    }
+    setCsvError(null);
+    setUploadingCsv(true);
+
+    const formData = new FormData();
+    formData.append("file", csvFile);
+
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/upload/csv`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setCsvSuccess("CSV uploaded successfully!");
+    } catch (error) {
+      setCsvError("Error uploading CSV.");
+    } finally {
+      setUploadingCsv(false);
     }
   };
 
@@ -130,6 +168,26 @@ const ContributePage: React.FC = () => {
             </button>
           </div>
 
+          {/* CSV Upload Section */}
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-1s">
+            <h2 className="text-xl font-semibold text-slate-300">Upload a CSV File</h2>
+            <input
+              type="file"
+              accept=".csv"
+              onChange={handleCsvChange}
+              className="border border-gray-300 rounded p-2 w-full mt-4"
+            />
+            {csvError && <p className="text-red-500 mt-2">{csvError}</p>}
+            {csvSuccess && <p className="text-green-500 mt-2">{csvSuccess}</p>}
+            <button
+              onClick={handleCsvUpload}
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 mt-4"
+              disabled={uploadingCsv}
+            >
+              {uploadingCsv ? "Uploading..." : "Upload CSV"}
+            </button>
+          </div>
+
           {/* GitHub Repository Upload Section */}
           <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-2s">
             <h2 className="text-xl font-semibold text-slate-300">Upload a GitHub Repository</h2>
@@ -154,13 +212,11 @@ const ContributePage: React.FC = () => {
 
         {/* Loading Animation */}
         {uploadingRepo && (
-          <div className="ml-5 mt-5 fixed inset-0 bg-black opacity-75 flex flex-col justify-center items-center z-50">
-            <p className="text-white text-xl font-bold">{loadingText}</p>
-            <Lottie
-              animationData={stages[loadingStage].animation}
-              loop={true}
-              style={{ width: 300, height: 300 }}
-            />
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="w-[300px] h-[300px]">
+              <Lottie animationData={stages[loadingStage]?.animation} loop={true} />
+              <p className="text-white text-center mt-4">{loadingText}</p>
+            </div>
           </div>
         )}
       </div>
@@ -169,4 +225,3 @@ const ContributePage: React.FC = () => {
 };
 
 export default ContributePage;
-
