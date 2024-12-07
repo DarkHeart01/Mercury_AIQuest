@@ -176,7 +176,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </Link>
       </SidebarMenu>
       <SidebarMenu>
-        <Link to="/sharebase">
+        <Link to="/Sharebase">
           <SidebarMenuButton className="joyride-wiki">
             ShareBase
           </SidebarMenuButton>

@@ -13,6 +13,7 @@ const ContributePage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [repoUrl, setRepoUrl] = useState<string>("");
+  const [wikiUrl, setWikiUrl] = useState<string>("");
 
   // States for file upload
   const [uploadingFile, setUploadingFile] = useState<boolean>(false);
@@ -28,6 +29,11 @@ const ContributePage: React.FC = () => {
   const [uploadingRepo, setUploadingRepo] = useState<boolean>(false);
   const [repoError, setRepoError] = useState<string | null>(null);
   const [repoSuccess, setRepoSuccess] = useState<string | null>(null);
+
+  // States for wiki upload
+  const [uploadingWiki, setUploadingWiki] = useState<boolean>(false);
+  const [wikiError, setWikiError] = useState<string | null>(null);
+  const [wikiSuccess, setWikiSuccess] = useState<string | null>(null);
 
   // Loading stages and timers for repository upload
   const [loadingStage, setLoadingStage] = useState<number>(0);
@@ -59,6 +65,10 @@ const ContributePage: React.FC = () => {
 
   const handleRepoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRepoUrl(event.target.value);
+  };
+
+  const handleWikiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setWikiUrl(event.target.value);
   };
 
   const handleFileUpload = async () => {
@@ -136,6 +146,26 @@ const ContributePage: React.FC = () => {
     }
   };
 
+  const handleWikiUpload = async () => {
+    if (!wikiUrl) {
+      setRepoError("Please provide a Wiki URL.");
+      return;
+    }
+    setWikiError(null);
+    setUploadingWiki(true);
+
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/upload/wiki`, { wikiUrl });
+
+      console.log('success');
+      setWikiSuccess("Repository uploaded successfully!");
+      setUploadingWiki(false);
+    } catch (error) {
+      setWikiError("Error uploading repository.");
+      setUploadingWiki(false);
+    }
+  };
+
   useEffect(() => {
     if (loadingStage >= 0 && loadingStage < stages.length) {
       setLoadingText(stages[loadingStage].text);
@@ -146,11 +176,14 @@ const ContributePage: React.FC = () => {
     <>
       <AppSidebar />
       <div className="p-4 w-full flex flex-col items-center justify-center bg-background page-fade-in">
-        <h1 className="text-3xl font-bold text-slate-300 section-slide-up">Contribute to Docs & Repos</h1>
+        <h1 className="text-3xl font-bold text-slate-300 section-slide-up">
+          Contribute to Docs & Repos
+        </h1>
 
+        {/* Grid Container for Upload Features */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 mt-10">
           {/* File Upload Section */}
-          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-1s">
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up">
             <h2 className="text-xl font-semibold text-slate-300">Upload a File</h2>
             <input
               type="file"
@@ -169,7 +202,7 @@ const ContributePage: React.FC = () => {
           </div>
 
           {/* CSV Upload Section */}
-          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-1s">
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up">
             <h2 className="text-xl font-semibold text-slate-300">Upload a CSV File</h2>
             <input
               type="file"
@@ -189,7 +222,7 @@ const ContributePage: React.FC = () => {
           </div>
 
           {/* GitHub Repository Upload Section */}
-          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up delay-2s">
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up">
             <h2 className="text-xl font-semibold text-slate-300">Upload a GitHub Repository</h2>
             <input
               type="text"
@@ -206,6 +239,27 @@ const ContributePage: React.FC = () => {
               disabled={uploadingRepo}
             >
               {uploadingRepo ? "Uploading..." : "Upload Repository"}
+            </button>
+          </div>
+
+          {/* Wiki Upload Section */}
+          <div className="bg-background border border-slate-400 p-6 rounded-lg shadow-md section-slide-up">
+            <h2 className="text-xl font-semibold text-slate-300">Upload a Wiki URL</h2>
+            <input
+              type="text"
+              value={wikiUrl}
+              onChange={handleWikiChange}
+              placeholder="Enter Wiki URL"
+              className="border border-gray-300 rounded p-2 w-full mt-4"
+            />
+            {wikiError && <p className="text-red-500 mt-2">{wikiError}</p>}
+            {wikiSuccess && <p className="text-green-500 mt-2">{wikiSuccess}</p>}
+            <button
+              onClick={handleWikiUpload}
+              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 mt-4"
+              disabled={uploadingWiki}
+            >
+              {uploadingWiki ? "Uploading..." : "Upload Wiki"}
             </button>
           </div>
         </div>
