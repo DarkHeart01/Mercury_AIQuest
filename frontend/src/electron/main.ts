@@ -27,7 +27,7 @@ app.on('ready', () => {
         console.error('Failed to load the development server:', err);
     });
 
-    // mainWindow.webContents.openDevTools(); // Open DevTools for debugging
+    mainWindow.webContents.openDevTools(); // Open DevTools for debugging
 });
 
 // Log window-all-closed event

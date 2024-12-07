@@ -8,15 +8,15 @@
   "author": "Siddhant Vishnu siddhant.m.vishnu@gmail.com",
   "scripts": {
     "dev": "vite",
-    "dev:electron": "cross-env ENV_TYPE=electron electron .",
+    "dev:electron": "cross-env electron .",
     "build": "tsc -b && vite build",
     "build:electron": "npm run build && npm run transpile:electron",
     "transpile:electron": "tsc -b src/electron/tsconfig.json",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dist:mac": "npm run build && npm run transpile:electron && cross-env ENV_TYPE=electron electron-builder --mac --arm64",
-    "dist:windows": "npm run build && npm run transpile:electron && cross-env ENV_TYPE=electron electron-builder --win --x64",
-    "dist:linux": "npm run build && npm run transpile:electron && cross-env ENV_TYPE=electron electron-builder --linux --x64"
+    "dist:mac": "npm run build && npm run transpile:electron && electron-builder --mac --arm64",
+    "dist:windows": "npm run build && npm run transpile:electron && electron-builder --win --x64",
+    "dist:linux": "npm run build && npm run transpile:electron && electron-builder --linux --x64"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

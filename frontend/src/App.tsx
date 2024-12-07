@@ -14,14 +14,11 @@ import QueryPage from "./pages/QueryPage";
 import DataBloom from "./pages/databloom";
 
 function App() {
-  // Set the basename for routing based on the environment
-  const isElectron = process.env.ENV_TYPE === 'electron';
-  const basename = isElectron ? '/mercury-ai.vercel.app' : '';
   
   return (
     <SidebarProvider>
       {/* Use HashRouter with dynamic basename */}
-      <Router basename={basename}>
+      <Router>
         <Routes>
           {/* Protected Routes */}
           <Route path="/Landing" element={<LandingPage />} />
