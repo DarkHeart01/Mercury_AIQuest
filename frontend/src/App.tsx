@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom"; // Use HashRouter for Electron
 import { Page as SettingsPage } from "@/pages/Settings";
 import ProfileSettingsPage from "@/pages/ProfilePage";
 import Feed from "@/pages/Feed";
@@ -12,12 +12,16 @@ import TrendingFeed from "./pages/TrendingFeed";
 import ContributePage from "./pages/ContributePage";
 import QueryPage from "./pages/QueryPage";
 import DataBloom from "./pages/databloom";
-import ShareBase from "./pages/ShareBase"
 
 function App() {
+  // Set the basename for routing based on the environment
+  const isElectron = process.env.ENV_TYPE === 'electron';
+  const basename = isElectron ? '/mercury-ai.vercel.app' : '';
+  
   return (
     <SidebarProvider>
-      <Router>
+      {/* Use HashRouter with dynamic basename */}
+      <Router basename={basename}>
         <Routes>
           {/* Protected Routes */}
           <Route path="/Landing" element={<LandingPage />} />
@@ -25,7 +29,6 @@ function App() {
           <Route path="/docsense" element={<DocSense />} />
           <Route path="/gittalk" element={<GitTalk />} />
           <Route path="/databloom" element={<DataBloom />} />
-          <Route path="/sharebase" element={<ShareBase />} />
           <Route path="/Feed" element={<Feed />} />
           <Route path="/Feed/Trending" element={<TrendingFeed />} />
           <Route path="/CreatePost" element={<CreatePostPage />} />
@@ -35,9 +38,6 @@ function App() {
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
           <Route path="Settings/profilepage" element={<ProfileSettingsPage />} />
-          {/* Default Home Route */}
-          <Route path="/" element={<Feed />} />
-
         </Routes>
       </Router>
     </SidebarProvider>

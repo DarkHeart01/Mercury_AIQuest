@@ -1,0 +1,21 @@
+{
+    "appId": "com.sidvish.mercury-ai",
+    "files": [
+        "dist-electron",
+        "dist-web"
+    ],
+    "icon": "public/logo.png",
+    "mac": {
+        "target": "dmg"
+    },
+    "linux": {
+        "target": "AppImage",
+        "category": "Utility"
+    },
+    "win": {
+        "target": [
+            "portable",
+            "nsis"
+        ]
+    }
+}

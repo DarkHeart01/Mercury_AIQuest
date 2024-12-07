@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "NodeNext",
+        "outDir": "../../dist-electron",
+        "noEmitOnError": false, // Allow build even if there are type errors
+        "strict": false, // Optionally, make the type checking less strict
+        "skipLibCheck": true,
+    }
+}

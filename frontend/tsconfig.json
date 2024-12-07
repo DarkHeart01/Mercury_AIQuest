@@ -15,5 +15,8 @@
     },
     "noEmitOnError": false, // Allow build even if there are type errors
     "strict": false // Optionally, make the type checking less strict
-  }
+  },
+  "exclude": [
+    "src/electron"
+  ]
 }
