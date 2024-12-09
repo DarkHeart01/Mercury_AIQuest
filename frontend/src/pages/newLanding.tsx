@@ -12,7 +12,7 @@ export default function ChatPage() {
   const [results, setResults] = useState([]);
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
 
   // Track if the search bar should move to the bottom
   const [isSearchBarAtBottom, setIsSearchBarAtBottom] = useState(false);
@@ -50,7 +50,7 @@ export default function ChatPage() {
     },
     {
       target: ".joyride-contribute",
-      content: "You can contribute to the company’s database of documents and GitHub Repos!",
+      content: "You can contribute to the companys' database of documents and GitHub Repos!",
     },
     {
       target: ".joyride-analytics",
