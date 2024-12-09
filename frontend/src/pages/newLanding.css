@@ -37,4 +37,36 @@
   .delay-2s {
     animation-delay: 2s;
   }
+  .reply-card-scrollable {
+    max-height: 300px; /* Set a height to allow scrolling */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    padding-right: 1rem; /* Add padding to account for scrollbar space if necessary */
+  
+    /* Hide scrollbar for WebKit-based browsers */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .reply-card-scrollable::-webkit-scrollbar {
+    display: none; /* Hide scrollbar */
+  }
+  
+  .reply-card-scrollable {
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+  }
+  .preview-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+  }
+  
+  .read-more-link {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    text-decoration: underline;
+  }
+  
+  
   
