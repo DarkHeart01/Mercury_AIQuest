@@ -99,7 +99,6 @@ const DataBloom = () => {
         // Simulate a 3-second delay for loading
         setTimeout(async () => {
             try {
-                console.log(inputValue);
 
                 // Send the request to visualize data
                 const response = await axios.post(
@@ -160,8 +159,6 @@ const DataBloom = () => {
         setTimeout(async () => {
             try {
 
-                console.log(inputValue);
-
                 // Send the message to the API
                 const response = await axios.post(
                     `${import.meta.env.VITE_API_URL}/talk/csv?query=${encodeURIComponent(inputValue)}`,
@@ -212,7 +209,7 @@ const DataBloom = () => {
                     <ChatMessageList>
                         {messages.map((message: any) => {
                             const variant = message.sender === "user" ? "sent" : "received";
-                            console.log(message);
+                            
                             if (message.columns.length > 0 && message.data.length > 0) {
                                 return (
                                     <div className="overflow-x-auto">

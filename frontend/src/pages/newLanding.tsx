@@ -193,9 +193,8 @@ export default function ChatPage() {
                 <div key={index} className="p-4 border rounded-lg bg-card">
                   <p className="font-medium">
                     <a
-                      href={`#`} // Replace with actual link if available
+                      href={`/#/Query/${queryResult.queryID}`} // Replace with actual link if available
                       className="text-blue-600 hover:underline"
-                      target="_blank"
                       rel="noopener noreferrer"
                     >
                       {queryResult.content}
