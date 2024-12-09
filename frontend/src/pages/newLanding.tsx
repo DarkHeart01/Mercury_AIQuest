@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar-feed";
 import { Button } from "@/components/ui/button";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { Paperclip, Mic, CornerDownLeft, Loader } from "lucide-react";
-import Logo from "@/images/merc.png";
+import Logo from "@/images/logoopt4.png";
 import './newLanding.css';
 
 export default function ChatPage() {
@@ -115,7 +115,7 @@ export default function ChatPage() {
 
         {/* Logo Section */}
         <div className="absolute top-2 w-full flex justify-center joyride-logo slide-up">
-          <img src={Logo} alt="Logo" className="h-16 w-auto" />
+          <img src={Logo} alt="Logo" className="h-24" />
         </div>
 
         {/* Header */}
