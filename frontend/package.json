@@ -8,6 +8,8 @@
   "author": "Siddhant Vishnu siddhant.m.vishnu@gmail.com",
   "scripts": {
     "dev": "vite",
+
+    
     
     "dev:electron": "electron .",
     "build": "tsc -b && vite build",
