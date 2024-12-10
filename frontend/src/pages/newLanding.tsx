@@ -13,14 +13,47 @@ export default function ChatPage() {
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [, setError] = useState<string | null>(null);
-  const [expandedResults, setExpandedResults] = useState<Record<number, boolean>>({});
+
+  const [isSearchBarAtBottom, setIsSearchBarAtBottom] = useState(false);
+  const [aiReady, setAiReady] = useState(false);
 
   const joyrideSteps: Step[] = [
     {
       target: ".joyride-logo",
       content: "Welcome to Mercury, your personal Company AI assistant!",
     },
-    // Additional steps...
+    {
+      target: ".joyride-input",
+      content: "Type your query here and hit 'Send' to get results!",
+    },
+    {
+      target: ".joyride-gittalk",
+      content: "This is GitTalk: Here you can chat directly with your repository's files!",
+    },
+    {
+      target: ".joyride-docsense",
+      content: "This is DocSense: Here you can chat directly with your company's documents!",
+    },
+    {
+      target: ".joyride-batabloom",
+      content: "This is DataBloom: Analyze and visualize your CSV data!",
+    },
+    {
+      target: ".joyride-wiki",
+      content: "This is ShareBase: Internal Company Wiki!",
+    },
+    {
+      target: ".joyride-contribute",
+      content: "You can contribute to the companys' database of documents and GitHub Repos!",
+    },
+    {
+      target: ".joyride-analytics",
+      content: "Check out the analytics of queries and answers for each department!",
+    },
+    {
+      target: ".joyride-feed",
+      content: "You can check out the feed to see what's going on in your company!",
+    },
   ];
 
   const handleSend = async () => {
@@ -30,6 +63,8 @@ export default function ChatPage() {
     setResults([]);
     setAiSuggestion("");
     setError(null);
+    setIsSearchBarAtBottom(true);
+    setAiReady(false);
 
     setTimeout(async () => {
       try {
@@ -46,15 +81,9 @@ export default function ChatPage() {
       } finally {
         setLoading(false);
         setQuery("");
+        setAiReady(true);
       }
     }, 1000);
-  };
-
-  const toggleExpand = (index: number) => {
-    setExpandedResults((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
   };
 
   return (
@@ -70,16 +99,25 @@ export default function ChatPage() {
       />
       <AppSidebar />
       <div className="flex flex-col items-center justify-center w-full min-h-screen bg-background text-foreground relative page-fade-in">
-        <div className="absolute top-2 w-full flex justify-center joyride-logo slide-up">
+        <div className="absolute top-2 w-full flex justify-center joyride-logo slide-up" style={{marginLeft: "-35px"}}>
           <img src={Logo} alt="Logo" className="h-24" />
         </div>
+
+        {!isSearchBarAtBottom && !loading && (
+          <div className="text-center mb-6 mt-20 joyride-header slide-up delay-1s">
+            <h1 className="text-2xl font-bold">What can I help you with?</h1>
+          </div>
+        )}
 
         <div
           className="mt-6 w-full max-w-md joyride-results reply-card-scrollable"
           style={{
-            maxHeight: "calc(100vh - 250px)",
+            maxHeight: isSearchBarAtBottom
+              ? "calc(100vh - 150px)"
+              : "calc(100vh - 250px)",
             paddingBottom: "70px",
             paddingTop: "20px",
+            paddingRight: "30px",
           }}
         >
           {loading && (
@@ -89,42 +127,42 @@ export default function ChatPage() {
           )}
 
           {!loading && results.length > 0 && (
-            <div className="space-y-4 mt-6">
-              <h2 className="text-lg font-semibold">Search Results</h2>
-              {results.map((queryResult: any, index) => (
-                <div
-                  key={index}
-                  className="p-4 border rounded-lg bg-card"
-                >
-                  <p className="font-medium">
-                    <a
-                      href={`/#/Query/${queryResult.queryID}`}
-                      className="text-blue-600 hover:underline"
-                      rel="noopener noreferrer"
-                    >
-                      {queryResult.title || "Found in feed"}
-                    </a>
-                  </p>
-                  <div>
-                    {expandedResults[index] ? (
-                      <p>{queryResult.content}</p>
-                    ) : (
-                      <p className="preview-text">{queryResult.content}</p>
+            <>
+              <h2 className="text-lg font-bold text-center mb-4">Search Results</h2>
+              <div className="flex justify-center items-stretch gap-4 flex-wrap">
+                {results.map((queryResult: any, index) => (
+                  <div
+                    key={index}
+                    className="flex-shrink-0 w-[300px] p-4 border rounded-lg bg-card"
+                    style={{ minHeight: "150px" }}
+                  >
+                    <p className="font-medium">
+                      <a
+                        href={`/#/Query/${queryResult.queryID}`}
+                        className="text-blue-600 hover:underline"
+                        rel="noopener noreferrer"
+                      >
+                        {queryResult.content}
+                      </a>
+                    </p>
+                    {queryResult.answers.length > 0 && (
+                      <ul className="mt-2 space-y-1">
+                        {queryResult.answers.map((answer: any, idx: number) => (
+                          <li key={idx} className="text-sm text-muted">
+                            {answer.content} -{" "}
+                            <span className="italic">{answer.creatorName}</span>
+                          </li>
+                        ))}
+                      </ul>
                     )}
-                    <span
-                      className="read-more-link"
-                      onClick={() => toggleExpand(index)}
-                    >
-                      {expandedResults[index] ? "Show Less" : "Read More"}
-                    </span>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            </>
           )}
 
-          {aiSuggestion && (
-            <div className="mt-6 p-4 border rounded-lg bg-card text-center reply-card-scrollable">
+          {aiReady && aiSuggestion && (
+            <div className="mt-6 p-4 border rounded-lg bg-card text-center overflow-y-auto reply-card-scrollable">
               <h2 className="text-lg font-semibold">AI Suggestion</h2>
               <p className="text-sm">{aiSuggestion}</p>
             </div>
@@ -132,7 +170,7 @@ export default function ChatPage() {
         </div>
 
         <form
-          className="w-[850px] rounded-lg border bg-[card-foreground] bg-[#2f2f2f] focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s"
+          className={`w-[850px] rounded-lg border bg-[card-foreground] bg-[#2f2f2f] focus-within:ring-1 focus-within:ring-ring p-1 joyride-input slide-up delay-3s ${isSearchBarAtBottom ? "fixed bottom-4" : ""}`}
           onSubmit={(e) => {
             e.preventDefault();
             handleSend();
@@ -153,11 +191,7 @@ export default function ChatPage() {
               <Mic className="size-4" />
               <span className="sr-only">Use Microphone</span>
             </Button>
-            <Button
-              size="sm"
-              className="ml-auto gap-1.5"
-              onClick={handleSend}
-            >
+            <Button size="sm" className="ml-auto gap-1.5" onClick={handleSend}>
               Send Message
               <CornerDownLeft className="size-3.5" />
             </Button>
@@ -167,6 +201,24 @@ export default function ChatPage() {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
