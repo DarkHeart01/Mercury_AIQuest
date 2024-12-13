@@ -35,6 +35,7 @@ interface Query {
             designation: string;
         };
     }[];
+    imageUrl: string
 }
 
 const QueryPage: React.FC = () => {
@@ -132,16 +133,16 @@ const QueryPage: React.FC = () => {
                     answers: prevQuery.answers.map((answer) =>
                         answer.id === answerId
                             ? {
-                                  ...answer,
-                                  upvotesCount:
-                                      type === "UPVOTE"
-                                          ? answer.upvotesCount + 1
-                                          : answer.upvotesCount,
-                                  downvotesCount:
-                                      type === "DOWNVOTE"
-                                          ? answer.downvotesCount + 1
-                                          : answer.downvotesCount,
-                              }
+                                ...answer,
+                                upvotesCount:
+                                    type === "UPVOTE"
+                                        ? answer.upvotesCount + 1
+                                        : answer.upvotesCount,
+                                downvotesCount:
+                                    type === "DOWNVOTE"
+                                        ? answer.downvotesCount + 1
+                                        : answer.downvotesCount,
+                            }
                             : answer
                     ),
                 };
@@ -164,13 +165,30 @@ const QueryPage: React.FC = () => {
             <AppSidebar />
             <div className="w-full mt-5 flex justify-center">
                 <div className="p-4 w-[65%]">
-                    <h1 className="text-2xl font-bold w-[65%]">{query.content}</h1>
-                    <div className="text-sm text-gray-500">
-                        {new Date(query.createdAt).toLocaleString()}
+
+                    <div className="flex flex-row">
+                        <h1 className="text-2xl font-bold w-[65%]">
+                            {query.content}
+
+                            <div className="text-sm text-gray-500">
+                                {new Date(query.createdAt).toLocaleString()}
+                            </div>
+                        </h1>
+
+                        {query.imageUrl && (
+                            <div className="max-w-[10rem] max-h-[10rem] flex-shrink-0 mr-4 border border-gray-300 rounded overflow-hidden">
+                                <img
+                                    src={query.imageUrl}
+                                    alt="Query related"
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="mt-4">
                         <h2 className="text-lg font-semibold">Submit Your Answer</h2>
+
                         <textarea
                             className="w-full border rounded p-2 mt-2"
                             value={answerContent}
