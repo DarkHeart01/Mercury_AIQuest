@@ -77,8 +77,6 @@ export default function ChatPage() {
     setError(null);
     setIsSearchBarAtBottom(true);
     setAiReady(false);
-    setPreview(null);
-    setSelectedImage(null);
 
     setTimeout(async () => {
       try {
@@ -91,8 +89,6 @@ export default function ChatPage() {
           },
         });
 
-        console.log(response.data);
-
         const data = response.data;
 
         setResults(data.results.queries || []);
@@ -102,6 +98,8 @@ export default function ChatPage() {
       } finally {
         setLoading(false);
         setQuery("");
+        setPreview(null);
+        setSelectedImage(null);
         setAiReady(true);
       }
     }, 1000);
