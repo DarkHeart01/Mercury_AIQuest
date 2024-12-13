@@ -62,13 +62,6 @@ export default function ChatPage() {
 
   const handleSend = async () => {
 
-    setLoading(true);
-    setResults([]);
-    setAiSuggestion("");
-    setError(null);
-    setIsSearchBarAtBottom(true);
-    setAiReady(false);
-
     console.log('sent');
 
     const formData = new FormData();
@@ -77,6 +70,15 @@ export default function ChatPage() {
     if (selectedImage) {
       formData.append("file", selectedImage);
     }
+    
+    setLoading(true);
+    setResults([]);
+    setAiSuggestion("");
+    setError(null);
+    setIsSearchBarAtBottom(true);
+    setAiReady(false);
+    setPreview(null);
+    setSelectedImage(null);
 
     setTimeout(async () => {
       try {
