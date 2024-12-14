@@ -213,7 +213,7 @@ const SearchFeed: React.FC = () => {
 
                 {query.tags && (
                   <div className="mt-2 flex gap-2">
-                    {query.tags.map((tag) => (
+                    {query.tags.slice(0, 5).map((tag) => (
                       <span
                         key={tag.id}
                         className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
