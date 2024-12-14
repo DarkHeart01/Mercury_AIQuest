@@ -21,7 +21,7 @@
   .chart-card {
     opacity: 0;
     transform: scale(0.95);
-    animation: scaleIn 0.8s ease-out forwards;
+    animation: scaleIn 0.8s ease-out forwar ds;
     animation-delay: 0.2s; /* Adjust delay if necessary */
   }
   
