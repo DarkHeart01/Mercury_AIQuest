@@ -4,11 +4,61 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AppSidebar } from "@/components/app-sidebar-feed";
 import "@/pages/CreatePost.css"; // Import your CSS file
+import axios from "axios";
+
+// File Upload Component
+const FileUpload = ({ setFile, setFilePreview }: any) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files ? e.target.files[0] : null;
+        if (selectedFile) {
+            setFile(selectedFile);
+            setFilePreview(URL.createObjectURL(selectedFile)); // For preview
+        }
+    };
+
+    return (
+        <div className="mb-4">
+            <label htmlFor="file" className="block text-sm font-medium mb-1">
+                Upload a File (Image, PDF, etc.)
+            </label>
+            <input
+                type="file"
+                id="file"
+                accept="image/*,application/pdf"
+                onChange={handleFileChange}
+                className="w-full"
+            />
+        </div>
+    );
+};
+
+// File Preview Component
+const FilePreview = ({ filePreview }: any) => {
+    if (!filePreview) return null;
+
+    return (
+        <div>
+            {filePreview && (
+                <div className="flex items-center justify-center mb-4">
+                    <div className="w-[10rem] h-[8rem] rounded-lg overflow-hidden border">
+                        <img
+                            src={filePreview}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 const CreatePostPage = () => {
     const [content, setContent] = useState("");
     const [tags, setTags] = useState("");
     const [loading, setLoading] = useState(false);
+    const [file, setFile] = useState(null);
+    const [filePreview, setFilePreview] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [sending, setSending] = useState(false);
@@ -35,27 +85,33 @@ const CreatePostPage = () => {
         setSuccessMessage(null);
 
         const tagArray = tags.split(",").map((tag) => tag.trim()); // Convert tags to array
-        const postData = {
-            content,
-            tags: tagArray,
-            creatorId: 14, // Hardcoded for now
-        };
+
+        const formData = new FormData();
+        formData.append("content", content);
+        tagArray.forEach((tag, index) => {
+            formData.append(`tags[${index}]`, tag); // Sending tags as an array
+        });
+        formData.append("creatorId", "14");
+
+        if (file) {
+            formData.append("file", file);
+        }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/query/queries`, {
-                method: "POST",
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/query/queries`, formData, {
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                 },
-                body: JSON.stringify(postData),
             });
 
-            if (response.ok) {
+            if (response.status === 201) {
                 setSuccessMessage("Post created successfully!");
                 setContent("");
                 setTags("");
+                setFile(null); // Reset file after post
+                setFilePreview(null); // Reset preview
             } else {
-                const errorData = await response.json();
+                const errorData = response.data;
                 setErrorMessage(errorData.message || "Failed to create post.");
             }
         } catch (error) {
@@ -107,6 +163,10 @@ const CreatePostPage = () => {
                         />
                     </div>
 
+                    {/* File Upload and Preview */}
+                    <FileUpload setFile={setFile} setFilePreview={setFilePreview} />
+                    <FilePreview filePreview={filePreview} />
+
                     <Button type="submit" className="w-full" disabled={loading}>
                         {loading ? "Creating..." : "Create Post"}
                     </Button>
@@ -123,5 +183,3 @@ const CreatePostPage = () => {
 };
 
 export default CreatePostPage;
-
-

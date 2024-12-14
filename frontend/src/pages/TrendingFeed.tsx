@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { AppSidebar } from "@/components/app-sidebar-feed";
-import './TrendingFeed.css';
+import "./Feed.css";
 
-// Define types for the API responses
 interface Answer {
   content: string;
   createdAt: string;
@@ -21,39 +21,38 @@ interface Query {
   downvotesCount?: number;
   answersCount?: number;
   tags?: { id: number; name: string }[];
+  imageUrl?: string;
 }
 
 const TrendingFeed: React.FC = () => {
-  const [trendingQueries, setTrendingQueries] = useState<Query[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [userId] = useState(2); // Hardcoded userId for the purpose of the example
-  const [isPageVisible, setIsPageVisible] = useState(false); // Track page visibility for animation
+  const [queries, setQueries] = useState<Query[]>([]);
+  const [, setLoading] = useState(false);
+  const [userId] = useState(15); // Hardcoded userId for the purpose of the example
+  const [isPageVisible, setIsPageVisible] = useState(false); // For controlling page visibility on mount
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Set the page to be visible to trigger fade-in animation
-    setIsPageVisible(true);
+    setIsPageVisible(true); // Trigger the animation on component mount
 
-    // Fetch the trending queries
-    const fetchTrending = async () => {
+    const fetchFeed = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/feed/trending`
-        );
-        console.log(response.data.posts);
-        setTrendingQueries(response.data.posts || []);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/feed/trending`);
+        setQueries(response.data.posts);
       } catch (error) {
-        console.error("Error fetching trending queries:", error);
+        console.error("Error fetching feed:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchTrending();
+    fetchFeed();
   }, []);
 
   const handleVote = async (queryId: number, type: "UPVOTE" | "DOWNVOTE") => {
     try {
+      console.log(queryId);
       await axios.post(
         `${import.meta.env.VITE_API_URL}/query/queries/${queryId}/vote`,
         {
@@ -61,21 +60,20 @@ const TrendingFeed: React.FC = () => {
           type,
         }
       );
-      // Update the query's upvote/downvote count after voting
-      setTrendingQueries((prevQueries) =>
+      setQueries((prevQueries) =>
         prevQueries.map((query) =>
           query.id === queryId
             ? {
-                ...query,
-                upvotesCount:
-                  type === "UPVOTE"
-                    ? (query.upvotesCount || 0) + 1
-                    : query.upvotesCount,
-                downvotesCount:
-                  type === "DOWNVOTE"
-                    ? (query.downvotesCount || 0) + 1
-                    : query.downvotesCount,
-              }
+              ...query,
+              upvotesCount:
+                type === "UPVOTE"
+                  ? (query.upvotesCount || 0) + 1
+                  : query.upvotesCount,
+              downvotesCount:
+                type === "DOWNVOTE"
+                  ? (query.downvotesCount || 0) + 1
+                  : query.downvotesCount,
+            }
             : query
         )
       );
@@ -84,71 +82,103 @@ const TrendingFeed: React.FC = () => {
     }
   };
 
+  const handleQueryClick = (queryId: number | undefined) => {
+    if (queryId) {
+      navigate(`/Query/${queryId}`);
+    }
+  };
+
   return (
     <>
       <AppSidebar />
-      <div className={`p-4 w-full ${isPageVisible ? "fade-in" : ""}`}> {/* Apply fade-in class here */}
-        <h1 className="text-2xl font-bold mb-4">Trending Queries</h1>
-        {loading && <p>Loading...</p>}
+      <div
+        className={`p-4 w-full ${isPageVisible ? "fade-in" : ""}`} // Apply fade-in class when the page is visible
+      >
 
         <div>
-          {trendingQueries.map((query: any) => (
-            <div key={query.id || query.queryID} className="border p-4 mb-4 rounded shadow">
-              <h2 className="text-xl font-bold">{query.content}</h2>
-              <div className="text-sm text-gray-500">
-                {query.createdAt && new Date(query.createdAt).toLocaleString()}
-              </div>
+          {queries.map((query: Query) => (
+            <div
+              key={query.id || query.queryID}
+              className="relative border-2 border-gray-400 p-4 mb-4 rounded-lg shadow-md cursor-pointer flex items-start"
+              onClick={() => handleQueryClick(query.id || query.queryID)}
+            >
 
-              {/* Voting Buttons */}
-              <div className="mt-4 flex items-center space-x-4">
-                <button
-                  className="text-green-500 hover:text-green-700"
-                  onClick={() => handleVote(query.id || query.queryID, "UPVOTE")}
-                >
-                  Upvote
-                </button>
-                <span>{query.upvotesCount} Upvotes</span>
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => handleVote(query.id || query.queryID, "DOWNVOTE")}
-                >
-                  Downvote
-                </button>
-                <span>{query.downvotesCount} Downvotes</span>
-              </div>
+              {/* Content */}
+              <div className="flex-grow">
+                <h2 className="text-xl font-bold">{query.content}</h2>
+                <div className="text-sm text-gray-500">
+                  {query.createdAt && new Date(query.createdAt).toLocaleString()}
+                </div>
 
-              <div className="mt-2">
-                <h3 className="font-semibold">Answers:</h3>
-                {query.answers.length > 0 ? (
-                  query.answers.map((answer: any, index: number) => (
-                    <div key={index} className="p-2 border-t">
-                      <p>{answer.content}</p>
-                      <div className="text-sm text-gray-500 flex flex-row">
-                        {answer.createdAt && new Date(answer.createdAt).toLocaleString()} by{" "}
-                        {answer.creatorName || "Anonymous"}
-                        {answer.isOfficial && (
-                          <span className="text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full ml-2">
-                            Official
-                          </span>
-                        )}
+                {/* Voting Buttons */}
+                <div className="mt-4 flex items-center space-x-4">
+                  <button
+                    className="px-3 py-1 border border-green-500 text-green-500 rounded hover:bg-green-500 hover:text-white"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering `onClick` for the parent div
+                      handleVote(query.id || query.queryID!, "UPVOTE");
+                    }}
+                  >
+                    Upvote
+                  </button>
+                  <span className="px-3 py-1 border border-gray-300 rounded">{query.upvotesCount} Upvotes</span>
+                  <button
+                    className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white"
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering `onClick` for the parent div
+                      handleVote(query.id || query.queryID!, "DOWNVOTE");
+                    }}
+                  >
+                    Downvote
+                  </button>
+                  <span>{query.downvotesCount} Downvotes</span>
+                </div>
+
+                <div className="mt-2">
+                  <h3 className="font-semibold">Answers:</h3>
+                  {query.answers.length > 0 ? (
+                    query.answers.map((answer, index) => (
+                      <div key={index} className="p-2 border-t">
+                        <p>{answer.content}</p>
+                        <div className="text-sm text-gray-500 flex flex-row">
+                          {answer.createdAt &&
+                            new Date(answer.createdAt).toLocaleString()}{" "}
+                          by {answer.creatorName || "Anonymous"}
+                          {answer.isOfficial && (
+                            <span className="text-xs bg-yellow-300 text-yellow-800 px-2 py-1 rounded-full ml-2">
+                              Official
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))
-                ) : (
-                  <p>No answers yet.</p>
+                    ))
+                  ) : (
+                    <p>No answers yet.</p>
+                  )}
+                </div>
+
+                {query.tags && (
+                  <div className="mt-2 flex gap-2">
+                    {query.tags.map((tag) => (
+                      <span
+                        key={tag.id}
+                        className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
                 )}
               </div>
 
-              {query.tags && (
-                <div className="mt-2 flex gap-2">
-                  {query.tags.map((tag: any) => (
-                    <span
-                      key={tag.id}
-                      className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
+              {/* Image Box */}
+              {query.imageUrl && (
+                <div className="max-w-[15rem] max-h-[15rem] flex-shrink-0 mr-4 border border-gray-300 rounded overflow-hidden">
+                  <img
+                    src={query.imageUrl}
+                    alt="Query related"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
               )}
             </div>
@@ -160,4 +190,3 @@ const TrendingFeed: React.FC = () => {
 };
 
 export default TrendingFeed;
-
