@@ -13,6 +13,7 @@ import ContributePage from "./pages/ContributePage";
 import QueryPage from "./pages/QueryPage";
 import DataBloom from "./pages/databloom";
 import ShareBase from "./pages/ShareBase";
+import DeptAnalyticsPage from "./pages/DeptAnalyticsPage";
 
 function App() {
   
@@ -34,6 +35,7 @@ function App() {
           <Route path="/Query/:queryId" element={<QueryPage />} />
           <Route path="/Contribute" element={<ContributePage />} />
           <Route path='/Analytics' element={<AnalyticsPage />} />
+          <Route path='/DeptartmentAnalytics' element={<DeptAnalyticsPage />} />
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
           <Route path="Settings/profilepage" element={<ProfileSettingsPage />} />

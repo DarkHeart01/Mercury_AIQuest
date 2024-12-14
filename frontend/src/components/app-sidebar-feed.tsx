@@ -69,6 +69,21 @@ const data = {
       ],
     },
     {
+      title: "Analytics",
+      icon: StickyNote,
+      isActive: true,
+      items: [
+        {
+          title: "All Tags",
+          url: "#/Analytics",
+        },
+        {
+          title: "Department",
+          url: "#/DeptartmentAnalytics",
+        },
+      ],
+    },
+    {
       title: "Rewards",
       url: "#",
       icon: Award,
@@ -189,18 +204,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuButton>
         </Link>
       </SidebarMenu>
-      <SidebarMenu>
-        <Link to="/Analytics" className="joyride-analytics">
-          <SidebarMenuButton>
-            Analytics
-          </SidebarMenuButton>
-        </Link>
-      </SidebarMenu>
       <SidebarContent>
         <NavMain
           items={data.navMain.map((item) => {
             if (item.title === "Feed") {
               return { ...item, className: "joyride-feed" }; // Correct key casing
+            }
+            else if (item.title === "Analytics") {
+              return { ...item, className: "joyride-analytics" }; // Correct key casing
             }
             return item;
           })}
