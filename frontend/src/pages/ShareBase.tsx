@@ -8,6 +8,7 @@ import { CornerDownLeft, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     ChatBubble,
+    ChatBubbleAvatar,
     ChatBubbleMessage,
     ChatBubbleAction,
     ChatBubbleActionWrapper,
@@ -30,7 +31,7 @@ interface Message {
     id: number;
     text: string;
     sender: string;
-    isLoading?: boolean;
+    isLoading?: boolean; // Optional property
 }
 
 const ShareBase = () => {
@@ -53,7 +54,7 @@ const ShareBase = () => {
     const [selectedFileID, setSelectedFileID] = useState<number | null>(null);
     const [fileLoading, setFileLoading] = useState(true);
     const [, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); // Message loading state
 
     useEffect(() => {
         const fetchFiles = async () => {
@@ -90,7 +91,6 @@ const ShareBase = () => {
 
         setTimeout(async () => {
             try {
-                const queryWithPrefix = `With reference to ${selectedFile} file ${inputValue}`;
                 const response = await axios.post(
                     `${import.meta.env.VITE_API_URL}/talk/wiki?query=${encodeURIComponent(inputValue)}`,
                     { fileID: selectedFileID }
@@ -134,9 +134,7 @@ const ShareBase = () => {
                             const variant = message.sender === "user" ? "sent" : "received";
                             return (
                                 <ChatBubble key={message.id} variant={variant} className="chat-bubble-enter">
-                                    <div className="text-sm font-bold text-muted-foreground">
-                                        {variant === "sent" ? "US" : "AI"}
-                                    </div>
+                                    <ChatBubbleAvatar fallback={variant === "sent" ? "US" : "AI"} />
                                     <ChatBubbleMessage
                                         isLoading={message.isLoading}
                                         className={message.sender === "user" ? "bg-sky-400" : ""}
@@ -221,6 +219,5 @@ const ShareBase = () => {
 };
 
 export default ShareBase;
-
 
 
