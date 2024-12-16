@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar-feed";
 import { Button } from "@/components/ui/button";
 import { ChatInput } from "@/components/ui/chat/chat-input";
 import { Paperclip, Mic, CornerDownLeft, Loader } from "lucide-react";
-import Logo from "@/images/logoopt4.png";
+import Logo from "@/images/image-removebg-preview (2).png";
 import axios from "axios";
 import "./newLanding.css";
 
