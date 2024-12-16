@@ -8,9 +8,6 @@
   "author": "Siddhant Vishnu siddhant.m.vishnu@gmail.com",
   "scripts": {
     "dev": "vite",
-
-    
-    
     "dev:electron": "electron .",
     "build": "tsc -b && vite build",
     "build:electron": "npm run build && npm run transpile:electron",
@@ -43,11 +40,12 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "framer-motion": "^11.14.4",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.460.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
-    "react-icons": "^5.3.0",
+    "react-icons": "^5.4.0",
     "react-joyride": "^2.9.3",
     "react-markdown": "^9.0.1",
     "react-resizable-panels": "^2.1.7",
@@ -56,7 +54,8 @@
     "react-syntax-highlighter": "^15.6.1",
     "recharts": "^2.13.3",
     "remark-gfm": "^4.0.0",
-    "tailwind-merge": "^2.5.4",
+    "rsuite": "^5.75.0",
+    "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {

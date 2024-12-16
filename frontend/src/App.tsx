@@ -14,6 +14,7 @@ import QueryPage from "./pages/QueryPage";
 import DataBloom from "./pages/databloom";
 import ShareBase from "./pages/ShareBase";
 import DeptAnalyticsPage from "./pages/DeptAnalyticsPage";
+import NewFeedPage from "./pages/newFeed";
 
 function App() {
   
@@ -39,6 +40,7 @@ function App() {
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
           <Route path="Settings/profilepage" element={<ProfileSettingsPage />} />
+          <Route path="/newFeed" element={<NewFeedPage children={undefined}/>}/>
         </Routes>
       </Router>
     </SidebarProvider>

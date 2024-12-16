@@ -12,7 +12,7 @@ import { FaSpinner } from "react-icons/fa"; // Importing the loading spinner fro
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/outline"; // Importing the search icon
 import { useState } from "react";
 import "./Landing.css";
-import Logo from "@/images/MERCAI.png";
+import Logo from "@/images/mercuryfinallogo.png";
 
 interface changeType {
   target: {
