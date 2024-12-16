@@ -72,7 +72,7 @@ const DeptAnalyticsPage = () => {
         <>
             <AppSidebar />
             <div className="analytics-page-container m-5 flex flex-col w-full items-center">
-                <h2 className="text-3xl font-bold">Analytics Overview</h2>
+                <h2 className="text-3xl font-bold">Department Analytics</h2>
                 <div className="w-full h-full">
                     {rows.length > 0 ? (
                         rows.map((row, index) => (

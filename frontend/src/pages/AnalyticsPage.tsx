@@ -125,7 +125,7 @@ const AnalyticsPage = () => {
         <>
             <AppSidebar />
             <div className="analytics-page-container m-5 flex flex-col items-center">
-                <h2 className="text-3xl font-bold mb-8 text-center">Analytics Dashboard</h2>
+                <h2 className="text-3xl font-bold mb-8 text-center">Analytics Overview</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full px-4">
                     {analyticsData.map((tagData: any, index: number) => (
                         <div key={index} className="flex flex-col space-y-4">
