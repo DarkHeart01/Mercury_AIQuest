@@ -36,7 +36,7 @@ const SearchFeed: React.FC = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
-  const [userId] = useState(15); // Hardcoded userId for the purpose of the example
+  const [userId] = useState(2); // Hardcoded userId for the purpose of the example
   const [isPageVisible, setIsPageVisible] = useState(false); // For controlling page visibility on mount
 
   const navigate = useNavigate();
