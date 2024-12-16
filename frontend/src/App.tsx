@@ -40,7 +40,7 @@ function App() {
           <Route path="/Landing" element={<LandingPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
           <Route path="Settings/profilepage" element={<ProfileSettingsPage />} />
-          <Route path="/newFeed" element={<NewFeedPage children={undefined}/>}/>
+          <Route path="/newFeed" element={<NewFeedPage/>}/>
         </Routes>
       </Router>
     </SidebarProvider>
