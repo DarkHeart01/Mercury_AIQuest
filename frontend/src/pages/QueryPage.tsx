@@ -72,7 +72,7 @@ const QueryPage: React.FC = () => {
         try {
             const response = await axios.post(`${import.meta.env.VITE_API_URL}/query/queries/${queryId}/answer`, {
                 content: answerContent,
-                answerCreatorId: 14, // Replace with dynamic user ID if needed
+                answerCreatorId: 2, // Replace with dynamic user ID if needed
             });
 
             console.log(response.data);
@@ -94,7 +94,7 @@ const QueryPage: React.FC = () => {
 
     const handleMarkOfficial = async (answerId: number) => {
         try {
-            const userId = 15; // Replace with dynamic userId if needed
+            const userId = 4; // Replace with dynamic userId if needed
             await axios.post(`${import.meta.env.VITE_API_URL}/query/answers/${answerId}/markOfficial`, {
                 userId,
             });
