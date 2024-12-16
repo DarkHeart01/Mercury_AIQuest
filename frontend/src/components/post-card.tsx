@@ -13,7 +13,7 @@ interface AppCardProps {
 // Supported Tag Colors
 const validTagColors = ["red", "orange", "yellow", "green", "cyan", "blue", "violet"] as const;
 
-export const AppCard: React.FC<AppCardProps> = ({ title, description, imageUrl, tags, createdAt }) => {
+export const AppCard: React.FC<AppCardProps> = ({ title, description, imageUrl, tags }) => {
   return (
     <Card
       shaded
