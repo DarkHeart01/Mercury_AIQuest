@@ -94,7 +94,7 @@ const QueryPage: React.FC = () => {
 
     const handleMarkOfficial = async (answerId: number) => {
         try {
-            const userId = 4; // Replace with dynamic userId if needed
+            const userId = 3; // Replace with dynamic userId if needed
             await axios.post(`${import.meta.env.VITE_API_URL}/query/answers/${answerId}/markOfficial`, {
                 userId,
             });
