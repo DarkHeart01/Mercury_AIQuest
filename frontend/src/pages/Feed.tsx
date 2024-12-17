@@ -213,14 +213,17 @@ const SearchFeed: React.FC = () => {
 
                 {query.tags && (
                   <div className="mt-2 flex gap-2">
-                    {query.tags.slice(0, 5).map((tag) => (
-                      <span
-                        key={tag.id}
-                        className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
-                      >
-                        {tag.name}
-                      </span>
-                    ))}
+                    {query.tags
+                      .filter((tag) => tag.name.split(" ").length === 1) // Filter for single-word tags
+                      .slice(0, 5) // Limit to first 5 tags
+                      .map((tag) => (
+                        <span
+                          key={tag.id}
+                          className="bg-blue-100 text-blue-600 px-2 py-1 text-sm rounded"
+                        >
+                          {tag.name}
+                        </span>
+                      ))}
                   </div>
                 )}
               </div>

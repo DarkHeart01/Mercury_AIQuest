@@ -59,11 +59,12 @@ const ShareBase = () => {
     useEffect(() => {
         const fetchFiles = async () => {
             try {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/files`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/upload/wiki`);
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status}`);
                 }
                 const data = await response.json();
+                console.log(data);
                 setFiles(data);
             } catch (err) {
                 setError("Failed to fetch files. Please try again.");
@@ -191,12 +192,13 @@ const ShareBase = () => {
                                             <DropdownMenuItem
                                                 key={file.id}
                                                 onClick={() => {
-                                                    setSelectedFile(file.fileName);
+                                                    console.log('selecting')
+                                                    setSelectedFile(file.wikiUrl);
                                                     setSelectedFileID(file.id);
                                                 }}
                                                 className="cursor-pointer bg-[#252525]"
                                             >
-                                                {file.fileName}
+                                                {file.wikiUrl}
                                             </DropdownMenuItem>
                                         ))
                                     )}
