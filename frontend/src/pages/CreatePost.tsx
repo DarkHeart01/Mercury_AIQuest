@@ -91,7 +91,7 @@ const CreatePostPage = () => {
         tagArray.forEach((tag, index) => {
             formData.append(`tags[${index}]`, tag); // Sending tags as an array
         });
-        formData.append("creatorId", "3");
+        formData.append("creatorId", "4");
 
         if (file) {
             formData.append("file", file);
